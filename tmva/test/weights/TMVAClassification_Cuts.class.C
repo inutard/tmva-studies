@@ -10,7 +10,7 @@ Method         : Cuts::Cuts
 TMVA Release   : 4.1.2         [262402]
 ROOT Release   : 5.32/01       [335873]
 Creator        : inutard
-Date           : Fri Sep 27 12:17:26 2013
+Date           : Fri Oct 18 11:31:03 2013
 Host           : Linux lxbuild148.cern.ch 2.6.18-238.5.1.el5 #1 SMP Wed Mar 2 15:08:52 CET 2011 x86_64 x86_64 x86_64 GNU/Linux
 Dir            : /home/inutard/thesis/tmva/test
 Training events: 6000
@@ -47,13 +47,11 @@ VarProp[0]: "FSmart" [Categorisation of cuts]
 #VAR -*-*-*-*-*-*-*-*-*-*-*-* variables *-*-*-*-*-*-*-*-*-*-*-*-
 
 NVar 4
-var1+var2                     myvar1                        myvar1                        myvar1                                                          'F'    [-8.96602058411,7.69307804108]
-var1-var2                     myvar2                        myvar2                        Expression 2                                                    'F'    [-4.08540010452,4.0258936882]
-var3                          var3                          var3                          Variable 3                    units                             'F'    [-5.05078554153,4.35967063904]
-var4                          var4                          var4                          Variable 4                    units                             'F'    [-5.95050764084,4.92254400253]
-NSpec 2
-var1*2                        spec1                         spec1                         Spectator 1                   units                             'F'    [-9.91655540466,9.52782058716]
-var1*3                        spec2                         spec2                         Spectator 2                   units                             'F'    [-14.874833107,14.2917308807]
+var1                          var1                          var1                          var1                                                            'F'    [-4.95827770233,4.76391029358]
+var2                          var2                          var2                          var2                                                            'F'    [-5.24535989761,4.82998085022]
+var3                          var3                          var3                          var3                                                            'F'    [-5.05078554153,4.35967063904]
+var4                          var4                          var4                          var4                                                            'F'    [-5.95050764084,4.92254400253]
+NSpec 0
 
 
 ============================================================================ */
@@ -99,7 +97,7 @@ class ReadCuts : public IClassifierReader {
         fIsNormalised( false )
    {      
       // the training input variables
-      const char* inputVars[] = { "var1+var2", "var1-var2", "var3", "var4" };
+      const char* inputVars[] = { "var1", "var2", "var3", "var4" };
 
       // sanity checks
       if (theInputVars.size() <= 0) {
@@ -123,10 +121,10 @@ class ReadCuts : public IClassifierReader {
       }
 
       // initialize min and max vectors (for normalisation)
-      fVmin[0] = -8.96602058410645;
-      fVmax[0] = 7.69307804107666;
-      fVmin[1] = -4.08540010452271;
-      fVmax[1] = 4.0258936882019;
+      fVmin[0] = -4.95827770233154;
+      fVmax[0] = 4.7639102935791;
+      fVmin[1] = -5.24535989761353;
+      fVmax[1] = 4.82998085021973;
       fVmin[2] = -5.05078554153442;
       fVmax[2] = 4.35967063903809;
       fVmin[3] = -5.95050764083862;

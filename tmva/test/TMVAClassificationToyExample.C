@@ -69,8 +69,22 @@ method_stats make_method_stats(long long v, double r, std::string method) {
     return std::make_pair(r, make_pair(v, method));
 }
 
-void TMVAClassification()
+void TMVAClassificationToyExample()
 {
+	// The explicit loading of the shared libTMVA is done in TMVAlogon.C, defined in .rootrc
+	// if you use your private .rootrc, or run from a different directory, please copy the
+	// corresponding lines from .rootrc
+
+	// methods to be processed can be given as an argument; use format:
+	//
+	// mylinux~> root -l TMVAClassification.C\(\"myMethod1,myMethod2,myMethod3\"\)
+	//
+	// if you like to use a method via the plugin mechanism, we recommend using
+	//
+	// mylinux~> root -l TMVAClassification.C\(\"P_myMethod\"\)
+	// (an example is given for using the BDT as plugin (see below),
+	// but of course the real application is when you write your own
+	// method based)
 
 	//---------------------------------------------------------------
 	// This loads the library
@@ -93,48 +107,29 @@ void TMVAClassification()
 
 	// --------------------------------------------------------------------------------------------------
 
-    // Read training and test data  
-    TString data_path = "/mnt/xrootdb/alister/MVA_studies/samples/"; 
-    TFile *input_sig_el = TFile::Open(data_path + "nominal_el/tprime_650_1M.root");
-    TFile *input_sig_mu = TFile::Open(data_path + "nominal_mu/tprime_650_1M.root");
-    TFile *input_ttbar_el = TFile::Open(data_path + "nominal_el/ttbar.root");
-    TFile *input_ttbar_mu = TFile::Open(data_path + "nominal_mu/ttbar.root");
-    TFile *input_wjets_el = TFile::Open(data_path + "nominal_el/wjets.root");
-    TFile *input_wjets_mu = TFile::Open(data_path + "nominal_mu/wjets.root");
-    TFile *input_zjets_el = TFile::Open(data_path + "nominal_el/zjets.root");
-    TFile *input_zjets_mu = TFile::Open(data_path + "nominal_mu/zjets.root");
-    TFile *input_singletop_el = TFile::Open(data_path + "nominal_el/singletop.root");
-    TFile *input_singletop_mu = TFile::Open(data_path + "nominal_mu/singletop.root");
-    TFile *input_diboson_el = TFile::Open(data_path + "nominal_el/diboson.root");
-    TFile *input_diboson_mu = TFile::Open(data_path + "nominal_mu/diboson.root");
+	// --- Here the preparation phase begins
+
+    // Read training and test data
+	// (it is also possible to use ASCII format as input -> see TMVA Users Guide)
+	TString fname = "./tmva_class_example.root";
+	TFile *input = TFile::Open( fname );
 
     // --- Register the training and test trees
-    TTree *signal_el  = (TTree*)input_sig_el->Get("mini");
-    TTree *signal_mu  = (TTree*)input_sig_mu->Get("mini");
-    TTree *ttbar_el = (TTree*)input_ttbar_el->Get("mini");
-    TTree *ttbar_mu = (TTree*)input_ttbar_mu->Get("mini");
-    TTree *wjets_el = (TTree*)input_wjets_el->Get("mini");
-    TTree *wjets_mu = (TTree*)input_wjets_mu->Get("mini");
-    TTree *zjets_el = (TTree*)input_zjets_el->Get("mini");
-    TTree *zjets_mu = (TTree*)input_zjets_mu->Get("mini");
-    TTree *singletop_el = (TTree*)input_singletop_el->Get("mini");
-    TTree *singletop_mu = (TTree*)input_singletop_mu->Get("mini");
-    TTree *diboson_el = (TTree*)input_diboson_el->Get("mini");
-    TTree *diboson_mu = (TTree*)input_diboson_mu->Get("mini");
-    
-	// --- Here the preparation phase begins
-    std::vector<std::vector<TString> > variables; //each variable set specified in a 4-tuple.
-    std::fstream fin("cleaned-variables-no-jets.txt", std::fstream::in);
-    std::vector<TString> inp(4); //var, title, unit, type.
-    while (fin >> inp[0] >> inp[1] >> inp[2] >> inp[3]) {
-        variables.push_back(inp);
-    }
-    
-    std::set<method_stats> rankings;
-    const int max_trials = 5;
-    for (int num_used = 2; num_used <= min(variables.size(),8); num_used++) {
+
+	TTree *signal     = (TTree*)input->Get("TreeS");
+	TTree *background = (TTree*)input->Get("TreeB");
+	
+	std::cout << "--- TMVAClassification       : Using input file: " << input->GetName() << std::endl;
+
+    TString tvars[] = {"myvar1 := var1+var2", "myvar2 := var1-var2", "var3", "var4", "var1", "var2"};
+    std::vector<TString> variables;
+    for (int i = 0; i < 6; i++) variables.push_back(tvars[i]);
+	
+	std::set<method_stats> rankings;
+    const int max_trials = 1;
+    for (int num_used = 2; num_used <= variables.size(); num_used++) {
         for (int trial = 0; trial < max_trials; trial++) {
-            
+        
 	        // Create a ROOT output file where TMVA will store ntuples, histograms, etc.
 	        TString outfileName( "TMVA.root" );
 	        TFile* outputFile = TFile::Open( outfileName, "RECREATE" );
@@ -151,45 +146,32 @@ void TMVAClassification()
 	        // front of the "Silent" argument in the option string
 	        Factory *factory = new Factory( "TMVAClassification", outputFile,
 			        "!V:Silent:Color:DrawProgressBar:AnalysisType=Classification" );
-			        
-			std::cout << std::endl;
+
+	        std::cout << std::endl;
 			std::cout << "================================================" << std::endl;
 			//add a random num_used sized subset of variables to train on.
             long long variable_choice = random_ksubset(variables.size(), num_used);
             for (int i = 0; i < variables.size(); i++) {
                 if (variable_choice & (1LL<<i)) {
-                    const std::vector<TString>& tup = variables[i];
-                    factory->AddVariable(tup[0], tup[1], tup[2], tup[3][0]);
-					std::cout << "Adding variable: " << tup[1] << std::endl;
+                    factory->AddVariable(variables[i], 'F');
+					std::cout << "Adding variable: " << variables[i] << std::endl;
                 }
             }
-			std::cout << "================================================" << std::endl;
+			std::cout << "================================================" << std::endl;            
 
-            // global event weights per tree (see below for setting event-wise weights)
-            Double_t signalWeight     = 1.0;
-            Double_t backgroundWeight = 1.0;
+	        // global event weights per tree (see below for setting event-wise weights)
+	        Double_t signalWeight     = 1.0;
+	        Double_t backgroundWeight = 1.0;
 
-            // You can add an arbitrary number of signal or background trees
-            factory->AddSignalTree    ( signal_el,     signalWeight     );
-            factory->AddSignalTree    ( signal_mu,     signalWeight     );
-            factory->AddBackgroundTree( ttbar_el, backgroundWeight );
-            factory->AddBackgroundTree( ttbar_mu, backgroundWeight );
-            factory->AddBackgroundTree( wjets_el, backgroundWeight );
-            factory->AddBackgroundTree( wjets_mu, backgroundWeight );
-            factory->AddBackgroundTree( zjets_el, backgroundWeight );
-            factory->AddBackgroundTree( zjets_mu, backgroundWeight );
-            factory->AddBackgroundTree( singletop_el, backgroundWeight );
-            factory->AddBackgroundTree( singletop_mu, backgroundWeight );
-            factory->AddBackgroundTree( diboson_el, backgroundWeight );
-            factory->AddBackgroundTree( diboson_mu, backgroundWeight );
+	        // You can add an arbitrary number of signal or background trees
+	        factory->AddSignalTree    ( signal,     signalWeight     );
+	        factory->AddBackgroundTree( background, backgroundWeight );
 
-	        // Set individual event weights (the variables must exist in the original TTree)
-            factory->SetSignalWeightExpression    ("weight_70");
-            factory->SetBackgroundWeightExpression("weight_70");
+	        factory->SetBackgroundWeightExpression( "weight" );
 
 	        // Apply additional cuts on the signal and background samples (can be different)
-	        TCut mycuts = "weight_70>0 && analysis_channel==0"; // for example: TCut mycuts = "abs(var1)<0.5 && abs(var2-0.5)<1";
-	        TCut mycutb = "weight_70>0 && analysis_channel==0"; // for example: TCut mycutb = "abs(var1)<0.5";
+	        TCut mycuts = ""; // for example: TCut mycuts = "abs(var1)<0.5 && abs(var2-0.5)<1";
+	        TCut mycutb = ""; // for example: TCut mycutb = "abs(var1)<0.5";
 
 	        // Tell the factory how to use the training and testing events
 	        //
@@ -216,7 +198,7 @@ void TMVAClassification()
 	        if (Use["BDTG"])
 		        factory->BookMethod( Types::kBDT, "BDTG",
 				        "!H:!V:NTrees=2000::BoostType=Grad:Shrinkage=0.1:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=3:MaxDepth=4" );
-				        
+
 	        // ---- Now you can tell the factory to train, test, and evaluate the MVAs
 
 	        // Train MVAs using the set of training events
@@ -256,7 +238,7 @@ void TMVAClassification()
 	        delete factory;
 	    }
 	}
-
+    
     std::set<method_stats>::iterator it;
     std::cout << "Best variables:" << std::endl;
     for (it = rankings.begin(); it != rankings.end(); it++) {
@@ -265,7 +247,7 @@ void TMVAClassification()
         std::cout << "Method Name: " << (it->second).second << std::endl;
         std::cout << "variables used: ";
         for (int i = 0; i < variables.size(); i++) {
-            if ((it->second).first & (1LL << i)) std::cout << "[ " << variables[i][1] << " ] ";
+            if ((it->second).first & (1LL << i)) std::cout << "[ " << variables[i] << " ] ";
         }
         cout << endl;
         std::cout << "================================================" << std::endl;

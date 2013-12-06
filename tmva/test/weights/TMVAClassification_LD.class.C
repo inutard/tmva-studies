@@ -10,7 +10,7 @@ Method         : LD::LD
 TMVA Release   : 4.1.2         [262402]
 ROOT Release   : 5.32/01       [335873]
 Creator        : inutard
-Date           : Fri Sep 27 12:17:27 2013
+Date           : Fri Oct 18 11:20:45 2013
 Host           : Linux lxbuild148.cern.ch 2.6.18-238.5.1.el5 #1 SMP Wed Mar 2 15:08:52 CET 2011 x86_64 x86_64 x86_64 GNU/Linux
 Dir            : /home/inutard/thesis/tmva/test
 Training events: 6000

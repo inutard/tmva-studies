@@ -4,11 +4,11 @@
     <Info name="TMVA Release" value="4.1.2 [262402]"/>
     <Info name="ROOT Release" value="5.32/01 [335873]"/>
     <Info name="Creator" value="inutard"/>
-    <Info name="Date" value="Fri Sep 27 12:17:26 2013"/>
+    <Info name="Date" value="Fri Oct 18 11:20:45 2013"/>
     <Info name="Host" value="Linux lxbuild148.cern.ch 2.6.18-238.5.1.el5 #1 SMP Wed Mar 2 15:08:52 CET 2011 x86_64 x86_64 x86_64 GNU/Linux"/>
     <Info name="Dir" value="/home/inutard/thesis/tmva/test"/>
     <Info name="Training events" value="6000"/>
-    <Info name="TrainingTime" value="7.40289688e-02"/>
+    <Info name="TrainingTime" value="8.00161362e-02"/>
     <Info name="AnalysisType" value="Classification"/>
   </GeneralInfo>
   <Options>
