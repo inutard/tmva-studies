@@ -1,0 +1,7 @@
+#include "TMVA/MethodBDT.h"
+
+using namespace TMVA;
+
+MethodBDT* dyncast(IMethod* met) {
+    return dynamic_cast<MethodBDT*>(met);
+}
