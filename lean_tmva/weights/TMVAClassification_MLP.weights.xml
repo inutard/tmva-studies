@@ -4,11 +4,11 @@
     <Info name="TMVA Release" value="4.1.4 [262404]"/>
     <Info name="ROOT Release" value="5.34/09 [336393]"/>
     <Info name="Creator" value="inutard"/>
-    <Info name="Date" value="Mon Jan 13 01:01:58 2014"/>
+    <Info name="Date" value="Mon Jan 13 01:03:06 2014"/>
     <Info name="Host" value="Linux panlong 3.2.0-37-generic #58-Ubuntu SMP Thu Jan 24 15:28:10 UTC 2013 x86_64 x86_64 x86_64 GNU/Linux"/>
     <Info name="Dir" value="/home/inutard/Desktop/tmva-studies/lean_tmva"/>
     <Info name="Training events" value="23465"/>
-    <Info name="TrainingTime" value="6.04433038e+01"/>
+    <Info name="TrainingTime" value="6.09663560e+01"/>
     <Info name="AnalysisType" value="Classification"/>
   </GeneralInfo>
   <Options>
@@ -46,8 +46,8 @@
     <Option name="WeightRange" modified="No">1.000000e+00</Option>
   </Options>
   <Variables NVar="2">
-    <Variable VarIndex="0" Expression="Wlep_phi" Label="Wlep_phi" Title="Wlep_phi" Unit="nan" Internal="Wlep_phi" Type="F" Min="-3.13974118e+00" Max="3.14140701e+00"/>
-    <Variable VarIndex="1" Expression="dR_lb2" Label="dR_lb2" Title="dR_lb2" Unit="nan" Internal="dR_lb2" Type="F" Min="4.02186930e-01" Max="5.11403704e+00"/>
+    <Variable VarIndex="0" Expression="lep_eta" Label="lep_eta" Title="lep_eta" Unit="nan" Internal="lep_eta" Type="F" Min="-2.47533321e+00" Max="2.48194194e+00"/>
+    <Variable VarIndex="1" Expression="dR_lb_lep" Label="dR_lb_lep" Title="dR_lb_lep" Unit="nan" Internal="dR_lb_lep" Type="F" Min="4.00214612e-01" Max="5.07148123e+00"/>
   </Variables>
   <Spectators NSpec="0"/>
   <Classes NClass="2">
@@ -58,30 +58,30 @@
     <Transform Name="Normalize">
       <Selection>
         <Input NInputs="2">
-          <Input Type="Variable" Label="Wlep_phi" Expression="Wlep_phi"/>
-          <Input Type="Variable" Label="dR_lb2" Expression="dR_lb2"/>
+          <Input Type="Variable" Label="lep_eta" Expression="lep_eta"/>
+          <Input Type="Variable" Label="dR_lb_lep" Expression="dR_lb_lep"/>
         </Input>
         <Output NOutputs="2">
-          <Output Type="Variable" Label="Wlep_phi" Expression="Wlep_phi"/>
-          <Output Type="Variable" Label="dR_lb2" Expression="dR_lb2"/>
+          <Output Type="Variable" Label="lep_eta" Expression="lep_eta"/>
+          <Output Type="Variable" Label="dR_lb_lep" Expression="dR_lb_lep"/>
         </Output>
       </Selection>
       <Class ClassIndex="0">
         <Ranges>
-          <Range Index="0" Min="-3.1397411823272705e+00" Max="3.1414070129394531e+00"/>
-          <Range Index="1" Min="4.0218693017959595e-01" Max="5.1140370368957520e+00"/>
+          <Range Index="0" Min="-2.4753332138061523e+00" Max="2.4819419384002686e+00"/>
+          <Range Index="1" Min="4.0070626139640808e-01" Max="5.0714812278747559e+00"/>
         </Ranges>
       </Class>
       <Class ClassIndex="1">
         <Ranges>
-          <Range Index="0" Min="-3.1395642757415771e+00" Max="3.1384019851684570e+00"/>
-          <Range Index="1" Min="4.0324950218200684e-01" Max="4.4651026725769043e+00"/>
+          <Range Index="0" Min="-2.4540002346038818e+00" Max="2.3984785079956055e+00"/>
+          <Range Index="1" Min="4.0021461248397827e-01" Max="4.4651026725769043e+00"/>
         </Ranges>
       </Class>
       <Class ClassIndex="2">
         <Ranges>
-          <Range Index="0" Min="-3.1397411823272705e+00" Max="3.1414070129394531e+00"/>
-          <Range Index="1" Min="4.0218693017959595e-01" Max="5.1140370368957520e+00"/>
+          <Range Index="0" Min="-2.4753332138061523e+00" Max="2.4819419384002686e+00"/>
+          <Range Index="1" Min="4.0021461248397827e-01" Max="5.0714812278747559e+00"/>
         </Ranges>
       </Class>
     </Transform>
@@ -91,39 +91,39 @@
     <Layout NLayers="3">
       <Layer Index="0" NNeurons="3">
         <Neuron NSynapses="7">
-          2.7305796530589770e-02 -2.7290035777175026e-02 -2.3414700331196820e-02 -4.4397803385685886e-02 -1.4177925947347358e-02 -4.3311980701708240e-02 -1.9810334495608001e-02 
+          -4.2615774200558875e-03 5.7818399058350454e-03 1.3417245271630993e-03 7.4407245662850829e-01 -2.3556905419812801e-04 -9.0664601511718679e-01 -7.5511576822856652e-01 
         </Neuron>
         <Neuron NSynapses="7">
-          3.7567949401120748e-01 -3.7551070562086891e-01 -3.1385058813673700e-01 -4.8897691397333737e-01 -1.5632361719195134e-01 -7.0386371324050434e-01 -2.3826615288387140e-01 
+          9.3910450271913783e-03 -1.1952836524384565e-02 -2.9036377987912707e-03 -1.3893047620556691e+00 -4.8406078595471832e-04 9.7292044999881522e-01 -2.9005110641433971e+00 
         </Neuron>
         <Neuron NSynapses="7">
-          2.3490517344452336e-01 -2.3465740943715302e-01 -1.5781319853704656e-01 -4.2827911736886259e-01 -5.2990827218360924e-02 8.5535267191476350e-01 -9.5732406331302630e-02 
+          1.5167194046812812e-03 -1.9007612491512425e-03 -4.6702891883126392e-04 -6.4623816155877745e-01 -1.1576876478259705e-04 1.3952248184885028e+00 -2.7886813746403734e+00 
         </Neuron>
       </Layer>
       <Layer Index="1" NNeurons="8">
         <Neuron NSynapses="1">
-          2.0020581431624307e-01 
+          6.8357288039136250e-03 
         </Neuron>
         <Neuron NSynapses="1">
-          -2.0008929942830656e-01 
+          -8.8537751645068382e-03 
         </Neuron>
         <Neuron NSynapses="1">
-          -1.6302696833984087e-01 
+          -2.1238719863168718e-03 
         </Neuron>
         <Neuron NSynapses="1">
-          -3.0003259173751795e-01 
+          2.5498895001178207e-01 
         </Neuron>
         <Neuron NSynapses="1">
-          -8.2544821578615882e-02 
+          -1.5724063410514055e-04 
         </Neuron>
         <Neuron NSynapses="1">
-          1.0759837332026856e+00 
+          5.7766638654262525e-01 
         </Neuron>
         <Neuron NSynapses="1">
-          -1.2433030558310308e-01 
+          -5.0741682315517012e-01 
         </Neuron>
         <Neuron NSynapses="1">
-          -6.4051151029174663e-02 
+          7.7280708186383981e-02 
         </Neuron>
       </Layer>
       <Layer Index="2" NNeurons="1">
