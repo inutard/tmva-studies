@@ -4,11 +4,11 @@
     <Info name="TMVA Release" value="4.1.4 [262404]"/>
     <Info name="ROOT Release" value="5.34/09 [336393]"/>
     <Info name="Creator" value="inutard"/>
-    <Info name="Date" value="Mon Jan 13 01:03:06 2014"/>
+    <Info name="Date" value="Mon Jan 13 01:05:30 2014"/>
     <Info name="Host" value="Linux panlong 3.2.0-37-generic #58-Ubuntu SMP Thu Jan 24 15:28:10 UTC 2013 x86_64 x86_64 x86_64 GNU/Linux"/>
     <Info name="Dir" value="/home/inutard/Desktop/tmva-studies/lean_tmva"/>
     <Info name="Training events" value="23465"/>
-    <Info name="TrainingTime" value="6.09663560e+01"/>
+    <Info name="TrainingTime" value="6.53313072e+01"/>
     <Info name="AnalysisType" value="Classification"/>
   </GeneralInfo>
   <Options>
@@ -46,8 +46,8 @@
     <Option name="WeightRange" modified="No">1.000000e+00</Option>
   </Options>
   <Variables NVar="2">
-    <Variable VarIndex="0" Expression="lep_eta" Label="lep_eta" Title="lep_eta" Unit="nan" Internal="lep_eta" Type="F" Min="-2.47533321e+00" Max="2.48194194e+00"/>
-    <Variable VarIndex="1" Expression="dR_lb_lep" Label="dR_lb_lep" Title="dR_lb_lep" Unit="nan" Internal="dR_lb_lep" Type="F" Min="4.00214612e-01" Max="5.07148123e+00"/>
+    <Variable VarIndex="0" Expression="(b_had_pt&gt;700e3)?700e3:b_had_pt" Label="(b_had_pt&gt;700e3)?700e3:b_had_pt" Title="Pt(b_had)" Unit="MeV" Internal="_b_had_pt_700e3__700e3:b_had_pt" Type="F" Min="2.50067910e+04" Max="7.00000000e+05"/>
+    <Variable VarIndex="1" Expression="jet_m_max" Label="jet_m_max" Title="jet_m_max" Unit="nan" Internal="jet_m_max" Type="F" Min="6.00002656e+04" Max="1.79855562e+05"/>
   </Variables>
   <Spectators NSpec="0"/>
   <Classes NClass="2">
@@ -58,30 +58,30 @@
     <Transform Name="Normalize">
       <Selection>
         <Input NInputs="2">
-          <Input Type="Variable" Label="lep_eta" Expression="lep_eta"/>
-          <Input Type="Variable" Label="dR_lb_lep" Expression="dR_lb_lep"/>
+          <Input Type="Variable" Label="(b_had_pt&gt;700e3)?700e3:b_had_pt" Expression="(b_had_pt&gt;700e3)?700e3:b_had_pt"/>
+          <Input Type="Variable" Label="jet_m_max" Expression="jet_m_max"/>
         </Input>
         <Output NOutputs="2">
-          <Output Type="Variable" Label="lep_eta" Expression="lep_eta"/>
-          <Output Type="Variable" Label="dR_lb_lep" Expression="dR_lb_lep"/>
+          <Output Type="Variable" Label="(b_had_pt&gt;700e3)?700e3:b_had_pt" Expression="(b_had_pt&gt;700e3)?700e3:b_had_pt"/>
+          <Output Type="Variable" Label="jet_m_max" Expression="jet_m_max"/>
         </Output>
       </Selection>
       <Class ClassIndex="0">
         <Ranges>
-          <Range Index="0" Min="-2.4753332138061523e+00" Max="2.4819419384002686e+00"/>
-          <Range Index="1" Min="4.0070626139640808e-01" Max="5.0714812278747559e+00"/>
+          <Range Index="0" Min="2.5006791015625000e+04" Max="7.0000000000000000e+05"/>
+          <Range Index="1" Min="6.0000265625000000e+04" Max="1.7985556250000000e+05"/>
         </Ranges>
       </Class>
       <Class ClassIndex="1">
         <Ranges>
-          <Range Index="0" Min="-2.4540002346038818e+00" Max="2.3984785079956055e+00"/>
-          <Range Index="1" Min="4.0021461248397827e-01" Max="4.4651026725769043e+00"/>
+          <Range Index="0" Min="2.5024984375000000e+04" Max="7.0000000000000000e+05"/>
+          <Range Index="1" Min="6.0007371093750000e+04" Max="1.4578317187500000e+05"/>
         </Ranges>
       </Class>
       <Class ClassIndex="2">
         <Ranges>
-          <Range Index="0" Min="-2.4753332138061523e+00" Max="2.4819419384002686e+00"/>
-          <Range Index="1" Min="4.0021461248397827e-01" Max="5.0714812278747559e+00"/>
+          <Range Index="0" Min="2.5006791015625000e+04" Max="7.0000000000000000e+05"/>
+          <Range Index="1" Min="6.0000265625000000e+04" Max="1.7985556250000000e+05"/>
         </Ranges>
       </Class>
     </Transform>
@@ -91,39 +91,39 @@
     <Layout NLayers="3">
       <Layer Index="0" NNeurons="3">
         <Neuron NSynapses="7">
-          -4.2615774200558875e-03 5.7818399058350454e-03 1.3417245271630993e-03 7.4407245662850829e-01 -2.3556905419812801e-04 -9.0664601511718679e-01 -7.5511576822856652e-01 
+          -1.4245819132773363e-01 3.7339476592300120e+00 7.6502513481083806e-02 8.3216071374946465e-01 -4.4302550920165368e-01 3.3005770432636183e-01 -2.2178572683733853e+00 
         </Neuron>
         <Neuron NSynapses="7">
-          9.3910450271913783e-03 -1.1952836524384565e-02 -2.9036377987912707e-03 -1.3893047620556691e+00 -4.8406078595471832e-04 9.7292044999881522e-01 -2.9005110641433971e+00 
+          4.2818222274640322e-01 -4.4588363071491172e-01 -5.3044808170135260e-01 -3.7750389391913797e-01 -1.5827659579799269e-01 -5.3262542723254547e-01 -3.2065642548055142e+00 
         </Neuron>
         <Neuron NSynapses="7">
-          1.5167194046812812e-03 -1.9007612491512425e-03 -4.6702891883126392e-04 -6.4623816155877745e-01 -1.1576876478259705e-04 1.3952248184885028e+00 -2.7886813746403734e+00 
+          1.9874228083244896e-01 4.0774253184399623e+00 -3.5587264837748794e-01 5.5987343328832073e-01 -6.2513548253695339e-01 1.4510368636144020e+00 -5.5510242230421785e+00 
         </Neuron>
       </Layer>
       <Layer Index="1" NNeurons="8">
         <Neuron NSynapses="1">
-          6.8357288039136250e-03 
+          -1.4305900331369931e-02 
         </Neuron>
         <Neuron NSynapses="1">
-          -8.8537751645068382e-03 
+          4.1968099047707169e-01 
         </Neuron>
         <Neuron NSynapses="1">
-          -2.1238719863168718e-03 
+          5.4878259176314591e-04 
         </Neuron>
         <Neuron NSynapses="1">
-          2.5498895001178207e-01 
+          -1.3281263561682571e-01 
         </Neuron>
         <Neuron NSynapses="1">
-          -1.5724063410514055e-04 
+          2.0224060728555142e-02 
         </Neuron>
         <Neuron NSynapses="1">
-          5.7766638654262525e-01 
+          1.0621456846377610e+00 
         </Neuron>
         <Neuron NSynapses="1">
-          -5.0741682315517012e-01 
+          -6.3024002023586712e-01 
         </Neuron>
         <Neuron NSynapses="1">
-          7.7280708186383981e-02 
+          -9.6528369725275631e-01 
         </Neuron>
       </Layer>
       <Layer Index="2" NNeurons="1">

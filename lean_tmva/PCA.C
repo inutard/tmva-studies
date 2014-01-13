@@ -51,8 +51,7 @@
 
 using namespace TMVA;
 
-void PCA()
-{
+void PCA() {
 	//---------------------------------------------------------------
 	// This loads the library
 	Tools::Instance();
