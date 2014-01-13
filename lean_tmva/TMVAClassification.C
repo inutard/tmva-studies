@@ -36,6 +36,7 @@
 #include <cstdlib>
 #include <set>
 #include <algorithm>
+#include <ctime>
 
 #include "TChain.h"
 #include "TFile.h"
@@ -72,7 +73,7 @@ method_stats make_method_stats(long long v, double r, std::string method) {
 
 void TMVAClassification()
 {
-    srand(0);
+    srand(time(NULL));
 	//---------------------------------------------------------------
 	// This loads the library
 	Tools::Instance();
@@ -159,6 +160,7 @@ void TMVAClassification()
             long long variable_choice = random_ksubset(variables.size(), num_used);
             
             for (int i = 0; i < variables.size(); i++) {
+                if (variables[0][1] == "analysis_channel") continue;
                 long long chosen = variable_choice;
                 chosen &= (1LL << i);
                 if (chosen) {
@@ -274,6 +276,7 @@ void TMVAClassification()
         cout << endl;
         std::cout << "================================================" << std::endl;
     }
+
 	// Launch the GUI for the root macros
 	//if (!gROOT->IsBatch()) TMVAGui( outfileName );
 }
