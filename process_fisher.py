@@ -1,7 +1,6 @@
 #!/usr/bin/python2.7
-import re
 
-ufile = open("fisher_weights.txt")
+ufile = open("fisher_weights_normalized.txt")
 
 text = ""
 variables = []

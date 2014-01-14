@@ -117,7 +117,8 @@ void PCA() {
     
     for (int i = 0; i < variables.size(); i++) {
         const std::vector<TString>& tup = variables[i];
-        if (tup[1][0] == 'a') continue;
+        if (tup[1] == "analysis_channel") continue;
+        cout << "Adding variable: " << tup[1] << endl;
         factory->AddVariable(tup[0], tup[1], tup[2], tup[3][0]);
     }
 	std::cout << "================================================" << std::endl;
@@ -160,7 +161,7 @@ void PCA() {
 	        "nTrain_Signal=0:nTrain_Background=0:SplitMode=Random:NormMode=NumEvents:!V" );
 
 
-    factory->BookMethod( TMVA::Types::kLD, "LD", "H:!V:VarTransform=PCA:CreateMVAPdfs:PDFInterpolMVAPdf=Spline2:NbinsMVAPdf=50:NsmoothMVAPdf=10" );
+    factory->BookMethod( TMVA::Types::kLD, "LD", "H:!V:VarTransform=Normalise:CreateMVAPdfs:PDFInterpolMVAPdf=Spline2:NbinsMVAPdf=50:NsmoothMVAPdf=10" );
     
     // ---- Book MVA methods
     //

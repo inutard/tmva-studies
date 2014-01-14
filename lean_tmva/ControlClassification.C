@@ -36,6 +36,7 @@
 #include <cstdlib>
 #include <set>
 #include <algorithm>
+#include <ctime>
 
 #include "TChain.h"
 #include "TFile.h"
@@ -51,10 +52,29 @@
 
 using namespace TMVA;
 
-void PCA() {
+typedef std::pair<double, std::pair<long long, std::string> > method_stats;
+method_stats make_method_stats(long long v, double r, std::string method) {
+    return std::make_pair(r, make_pair(v, method));
+}
+
+void ControlClassification()
+{
+    srand(time(NULL));
 	//---------------------------------------------------------------
 	// This loads the library
 	Tools::Instance();
+    gROOT->LoadMacro("mydyncast.C+");
+    
+	// Default MVA methods to be trained + tested
+	std::map<std::string,int> Use;
+
+	//
+	// --- Neural Networks (all are feed-forward Multilayer Perceptrons)
+	Use["MLP"]             = 1; // Recommended ANN
+	// 
+	// --- Boosted Decision Trees
+	Use["BDTG"]            = 0;
+	// ---------------------------------------------------------------
 
 	std::cout << std::endl;
 	std::cout << "==> Start TMVAClassification" << std::endl;
@@ -92,12 +112,14 @@ void PCA() {
     
 	// --- Here the preparation phase begins
     std::vector<std::vector<TString> > variables; //each variable set specified in a 4-tuple.
-    std::fstream fin("cleaned-variables-no-jets.txt", std::fstream::in);
+    std::fstream fin("control_variables.txt", std::fstream::in);
     std::vector<TString> inp(4); //var, title, unit, type.
     while (fin >> inp[0] >> inp[1] >> inp[2] >> inp[3]) {
         variables.push_back(inp);
     }
     
+    std::set<method_stats> rankings;
+
     // Create a ROOT output file where TMVA will store ntuples, histograms, etc.
     TString outfileName( "TMVA.root" );
     TFile* outputFile = TFile::Open( outfileName, "RECREATE" );
@@ -114,12 +136,16 @@ void PCA() {
     // front of the "Silent" argument in the option string
     Factory *factory = new Factory( "TMVAClassification", outputFile,
 	        "!V:Silent:Color:DrawProgressBar:AnalysisType=Classification" );
+	        
+	std::cout << std::endl;
+	std::cout << "================================================" << std::endl;
+	//add a random num_used sized subset of variables to train on.
     
     for (int i = 0; i < variables.size(); i++) {
+        if (variables[i][1] == "analysis_channel") continue;
         const std::vector<TString>& tup = variables[i];
-        if (tup[1] == "analysis_channel") continue;
-        cout << "Adding variable: " << tup[1] << endl;
         factory->AddVariable(tup[0], tup[1], tup[2], tup[3][0]);
+		std::cout << "Adding variable: " << tup[1] << std::endl;
     }
 	std::cout << "================================================" << std::endl;
 
@@ -160,9 +186,6 @@ void PCA() {
     factory->PrepareTrainingAndTestTree( mycuts, mycutb,
 	        "nTrain_Signal=0:nTrain_Background=0:SplitMode=Random:NormMode=NumEvents:!V" );
 
-
-    factory->BookMethod( TMVA::Types::kLD, "LD", "H:!V:VarTransform=Normalisation:CreateMVAPdfs:PDFInterpolMVAPdf=Spline2:NbinsMVAPdf=50:NsmoothMVAPdf=10" );
-    
     // ---- Book MVA methods
     //
     // Please lookup the various method configuration options in the corresponding cxx files, eg:
@@ -170,10 +193,13 @@ void PCA() {
 
 
     // TMVA ANN: MLP (recommended ANN) -- all ANNs in TMVA are Multilayer Perceptrons
-    //factory->BookMethod( Types::kMLP, "MLP", "!H:!V:NeuronType=tanh:VarTransform=N:NCycles=600:HiddenLayers=N+5:TestRate=5:!UseRegulator" );
+    if (Use["MLP"])
+        factory->BookMethod( Types::kMLP, "MLP", "!H:!V:NeuronType=tanh:VarTransform=N:NCycles=600:HiddenLayers=N+5:TestRate=5:!UseRegulator" );
 
     // Boosted decision trees
-    //factory->BookMethod( Types::kBDT, "BDTG","!H:!V:NTrees=2000::BoostType=Grad:Shrinkage=0.1:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=3:MaxDepth=4" );
+    if (Use["BDTG"])
+        factory->BookMethod( Types::kBDT, "BDTG",
+		        "!H:!V:NTrees=2000::BoostType=Grad:Shrinkage=0.1:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=3:MaxDepth=4" );
 		        
     // ---- Now you can tell the factory to train, test, and evaluate the MVAs
 
@@ -187,16 +213,47 @@ void PCA() {
     factory->EvaluateAllMethods();
 
     // --------------------------------------------------------------
-    
-    TMVA::IMethod* myLD = reader->FindMVA( "LD" ); 
-    const TMVA::Event* ev = myLD->GetEvent();
-    
-    
+
     // Save the output
     outputFile->Close();
 
     std::cout << "==> Wrote root file: " << outputFile->GetName() << std::endl;
     std::cout << "==> TMVAClassification is done!" << std::endl;
+
+    long long variable_choice = (1 << variables.size())-1;
+    
+    //get efficiency of methods, compare with current bests
+    IMethod* i_met;
+    MethodBase* method;
+    if (Use["MLP"]) {
+        i_met = factory->GetMethod("MLP");
+        method = dyncast(i_met);
+        std::cout << "MLP Significance: " << method->GetSignificance() <<  std::endl;
+        rankings.insert(make_method_stats(variable_choice, method->GetSignificance(), "MLP"));
+    }
+
+    if (Use["BDTG"]) {
+        i_met = factory->GetMethod("BDTG");
+        method = dyncast(i_met);
+        std::cout << "BDTG Significance: " << method->GetSignificance() <<  std::endl;
+        rankings.insert(make_method_stats(variable_choice, method->GetSignificance(), "BDTG"));
+    }
+
+    delete factory;
+
+    std::set<method_stats>::iterator it;
+    std::cout << "Best variables:" << std::endl;
+    for (it = rankings.begin(); it != rankings.end(); it++) {
+        std::cout << "================================================" << std::endl;
+        std::cout << "Significance: " << it->first << std::endl;
+        std::cout << "Method Name: " << (it->second).second << std::endl;
+        std::cout << "variables used: ";
+        for (int i = 0; i < variables.size(); i++) {
+            if ((it->second).first & (1LL << i)) std::cout << "[ " << variables[i][1] << " ] ";
+        }
+        cout << endl;
+        std::cout << "================================================" << std::endl;
+    }
 
 	// Launch the GUI for the root macros
 	if (!gROOT->IsBatch()) TMVAGui( outfileName );

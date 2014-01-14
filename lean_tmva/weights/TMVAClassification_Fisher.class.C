@@ -10,7 +10,7 @@ Method         : Fisher::Fisher
 TMVA Release   : 4.1.4         [262404]
 ROOT Release   : 5.34/09       [336393]
 Creator        : inutard
-Date           : Mon Jan 13 21:36:31 2014
+Date           : Tue Jan 14 00:27:05 2014
 Host           : Linux panlong 3.2.0-37-generic #58-Ubuntu SMP Thu Jan 24 15:28:10 UTC 2013 x86_64 x86_64 x86_64 GNU/Linux
 Dir            : /home/inutard/Desktop/tmva-studies/lean_tmva
 Training events: 23465
@@ -21,7 +21,7 @@ Analysis type  : [Classification]
 
 # Set by User:
 V: "False" [Verbose output (short form of "VerbosityLevel" below - overrides the latter one)]
-VarTransform: "None" [List of variable transformations performed before training, e.g., "D_Background,P_Signal,G,N_AllClasses" for: "Decorrelation, PCA-transformation, Gaussianisation, Normalisation, each for the given class of events ('AllClasses' denotes all events of all classes, if no class indication is given, 'All' is assumed)"]
+VarTransform: "Norm" [List of variable transformations performed before training, e.g., "D_Background,P_Signal,G,N_AllClasses" for: "Decorrelation, PCA-transformation, Gaussianisation, Normalisation, each for the given class of events ('AllClasses' denotes all events of all classes, if no class indication is given, 'All' is assumed)"]
 H: "True" [Print method-specific help message]
 CreateMVAPdfs: "True" [Create PDFs for classifier outputs (signal and background)]
 Method: "Fisher" [Discrimination method]
@@ -146,90 +146,90 @@ class ReadFisher : public IClassifierReader {
       }
 
       // initialize min and max vectors (for normalisation)
-      fVmin[0] = 509029.90625;
-      fVmax[0] = 2500000;
-      fVmin[1] = 25006.791015625;
-      fVmax[1] = 700000;
-      fVmin[2] = 25007.9375;
-      fVmax[2] = 700000;
-      fVmin[3] = 20007.326171875;
-      fVmax[3] = 1097042.25;
-      fVmin[4] = -2.47533321380615;
-      fVmax[4] = 2.48194193840027;
-      fVmin[5] = -3.14132118225098;
-      fVmax[5] = 3.14153909683228;
-      fVmin[6] = 988.3388671875;
-      fVmax[6] = 1212683.875;
-      fVmin[7] = -3.14142751693726;
-      fVmax[7] = 3.14110827445984;
-      fVmin[8] = 3;
-      fVmax[8] = 14;
-      fVmin[9] = 60000.265625;
-      fVmax[9] = 179855.5625;
-      fVmin[10] = 0;
-      fVmax[10] = 5;
-      fVmin[11] = 6.92663526535034;
-      fVmax[11] = 1539711.625;
-      fVmin[12] = 250003.984375;
-      fVmax[12] = 1428809;
-      fVmin[13] = -2.33010792732239;
-      fVmax[13] = 2.25264978408813;
-      fVmin[14] = -3.1412341594696;
-      fVmax[14] = 3.14146661758423;
-      fVmin[15] = 60000.265625;
-      fVmax[15] = 109937.4140625;
+      fVmin[0] = -1;
+      fVmax[0] = 1;
+      fVmin[1] = -1;
+      fVmax[1] = 0.99999988079071;
+      fVmin[2] = -1;
+      fVmax[2] = 1;
+      fVmin[3] = -1;
+      fVmax[3] = 1;
+      fVmin[4] = -1;
+      fVmax[4] = 1;
+      fVmin[5] = -1;
+      fVmax[5] = 1;
+      fVmin[6] = -1;
+      fVmax[6] = 1;
+      fVmin[7] = -1;
+      fVmax[7] = 1;
+      fVmin[8] = -1;
+      fVmax[8] = 1;
+      fVmin[9] = -1;
+      fVmax[9] = 1;
+      fVmin[10] = -1;
+      fVmax[10] = 1;
+      fVmin[11] = -1;
+      fVmax[11] = 1;
+      fVmin[12] = -1;
+      fVmax[12] = 1;
+      fVmin[13] = -1;
+      fVmax[13] = 1;
+      fVmin[14] = -1;
+      fVmax[14] = 1;
+      fVmin[15] = -1;
+      fVmax[15] = 1;
       fVmin[16] = -1;
-      fVmax[16] = 0.772672593593597;
-      fVmin[17] = 1296.06591796875;
-      fVmax[17] = 1374306.875;
-      fVmin[18] = -4.75985717773438;
-      fVmax[18] = 6.55746221542358;
-      fVmin[19] = -3.13974118232727;
-      fVmax[19] = 3.14140701293945;
-      fVmin[20] = 80394.3984375;
-      fVmax[20] = 1539711.625;
-      fVmin[21] = 25007.9375;
-      fVmax[21] = 1307815.875;
-      fVmin[22] = 25006.791015625;
-      fVmax[22] = 1480084;
-      fVmin[23] = 5714.87841796875;
-      fVmax[23] = 1496589.375;
-      fVmin[24] = 4196.60595703125;
-      fVmax[24] = 1438302.875;
-      fVmin[25] = 0.118681840598583;
-      fVmax[25] = 4.50309705734253;
-      fVmin[26] = 0.400214612483978;
-      fVmax[26] = 5.07148122787476;
-      fVmin[27] = 0.401370584964752;
-      fVmax[27] = 5.11403703689575;
-      fVmin[28] = 0.400214612483978;
-      fVmax[28] = 4.93675470352173;
-      fVmin[29] = 0.402186930179596;
-      fVmax[29] = 5.11403703689575;
-      fVmin[30] = 0.0196545533835888;
-      fVmax[30] = 7.90818357467651;
-      fVmin[31] = 0.396414637565613;
-      fVmax[31] = 5.5275444984436;
-      fVmin[32] = 0.397040575742722;
-      fVmax[32] = 4.74444341659546;
-      fVmin[33] = 0.396414637565613;
-      fVmax[33] = 4.74444341659546;
-      fVmin[34] = 0.399091243743896;
-      fVmax[34] = 5.5275444984436;
-      fVmin[35] = 0.396414637565613;
-      fVmax[35] = 4.25239944458008;
-      fVmin[36] = 0.400214612483978;
-      fVmax[36] = 4.26060628890991;
-      fVmin[37] = 0.380293309688568;
-      fVmax[37] = 3.63540410995483;
-      fVmin[38] = 0.400214612483978;
-      fVmax[38] = 3.63768362998962;
-      fVmin[39] = 63800.75;
-      fVmax[39] = 2115952.5;
-      fVmin[40] = 509029.90625;
-      fVmax[40] = 3296757.25;
-      fVmin[41] = 75616.296875;
-      fVmax[41] = 1807815.875;
+      fVmax[16] = 1;
+      fVmin[17] = -1;
+      fVmax[17] = 1;
+      fVmin[18] = -1;
+      fVmax[18] = 1;
+      fVmin[19] = -1;
+      fVmax[19] = 1;
+      fVmin[20] = -1;
+      fVmax[20] = 1;
+      fVmin[21] = -1;
+      fVmax[21] = 1;
+      fVmin[22] = -1;
+      fVmax[22] = 1;
+      fVmin[23] = -1;
+      fVmax[23] = 1;
+      fVmin[24] = -1;
+      fVmax[24] = 1;
+      fVmin[25] = -1;
+      fVmax[25] = 1;
+      fVmin[26] = -1;
+      fVmax[26] = 1;
+      fVmin[27] = -1;
+      fVmax[27] = 1;
+      fVmin[28] = -1;
+      fVmax[28] = 1;
+      fVmin[29] = -1;
+      fVmax[29] = 1;
+      fVmin[30] = -1;
+      fVmax[30] = 1;
+      fVmin[31] = -1;
+      fVmax[31] = 1;
+      fVmin[32] = -1;
+      fVmax[32] = 1;
+      fVmin[33] = -1;
+      fVmax[33] = 1;
+      fVmin[34] = -1;
+      fVmax[34] = 1;
+      fVmin[35] = -1;
+      fVmax[35] = 1;
+      fVmin[36] = -1;
+      fVmax[36] = 1;
+      fVmin[37] = -1;
+      fVmax[37] = 1;
+      fVmin[38] = -1;
+      fVmax[38] = 1;
+      fVmin[39] = -1;
+      fVmax[39] = 1;
+      fVmin[40] = -1;
+      fVmax[40] = 1;
+      fVmin[41] = -1;
+      fVmax[41] = 1;
 
       // initialize input variable types
       fType[0] = 'F';
@@ -278,6 +278,8 @@ class ReadFisher : public IClassifierReader {
       // initialize constants
       Initialize();
 
+      // initialize transformation
+      InitTransform();
    }
 
    // destructor
@@ -294,6 +296,15 @@ class ReadFisher : public IClassifierReader {
 
    // method-specific destructor
    void Clear();
+
+   // input variable transformation
+
+   double fMin_1[3][42];
+   double fMax_1[3][42];
+   void InitTransform_1();
+   void Transform_1( std::vector<double> & iv, int sigOrBgd ) const;
+   void InitTransform();
+   void Transform( std::vector<double> & iv, int sigOrBgd ) const;
 
    // common member variables
    const char* fClassName;
@@ -326,49 +337,49 @@ class ReadFisher : public IClassifierReader {
 
 inline void ReadFisher::Initialize() 
 {
-   fFisher0 = -2.70270749579;
-   fFisherCoefficients.push_back( 1.49435597926e-06 );
-   fFisherCoefficients.push_back( 2.26740791749e-06 );
-   fFisherCoefficients.push_back( 3.78826895882e-06 );
-   fFisherCoefficients.push_back( 5.81153725301e-07 );
-   fFisherCoefficients.push_back( -0.0389382098706 );
-   fFisherCoefficients.push_back( -0.0142871170207 );
-   fFisherCoefficients.push_back( 1.50627409243e-07 );
-   fFisherCoefficients.push_back( -0.0120557577174 );
-   fFisherCoefficients.push_back( 0.0683529880151 );
-   fFisherCoefficients.push_back( 2.50696086914e-06 );
-   fFisherCoefficients.push_back( 0.241194793808 );
-   fFisherCoefficients.push_back( 5.17844226845e-07 );
-   fFisherCoefficients.push_back( -1.14576812239e-07 );
-   fFisherCoefficients.push_back( 0.00450092962216 );
-   fFisherCoefficients.push_back( -0.00235196964237 );
-   fFisherCoefficients.push_back( 5.27722806785e-06 );
-   fFisherCoefficients.push_back( -0.26934418419 );
-   fFisherCoefficients.push_back( -5.99383321202e-07 );
-   fFisherCoefficients.push_back( 0.0472935348486 );
-   fFisherCoefficients.push_back( 0.0291236440165 );
-   fFisherCoefficients.push_back( 1.63768208203e-06 );
-   fFisherCoefficients.push_back( -2.8523319122e-06 );
-   fFisherCoefficients.push_back( -1.44344448211e-06 );
-   fFisherCoefficients.push_back( 3.61628017298e-07 );
-   fFisherCoefficients.push_back( -3.02500035989e-07 );
-   fFisherCoefficients.push_back( -0.419192058441 );
-   fFisherCoefficients.push_back( -0.143488796052 );
-   fFisherCoefficients.push_back( -0.211522813487 );
-   fFisherCoefficients.push_back( 0.262486604887 );
-   fFisherCoefficients.push_back( 0.232663458022 );
-   fFisherCoefficients.push_back( 0.0991629814975 );
-   fFisherCoefficients.push_back( 0.182671587419 );
-   fFisherCoefficients.push_back( 0.256773193998 );
-   fFisherCoefficients.push_back( -0.291657082157 );
-   fFisherCoefficients.push_back( -0.306063152694 );
-   fFisherCoefficients.push_back( 0.202637719845 );
-   fFisherCoefficients.push_back( 0.0175448700505 );
-   fFisherCoefficients.push_back( -0.00111791434354 );
-   fFisherCoefficients.push_back( 0.1413241444 );
-   fFisherCoefficients.push_back( 2.48015223996e-07 );
-   fFisherCoefficients.push_back( -1.11243647453e-06 );
-   fFisherCoefficients.push_back( 3.04981870809e-07 );
+   fFisher0 = 1814.78765726;
+   fFisherCoefficients.push_back( 1.48318717908 );
+   fFisherCoefficients.push_back( 0.76825493222 );
+   fFisherCoefficients.push_back( 1.27878708463 );
+   fFisherCoefficients.push_back( 0.312018346456 );
+   fFisherCoefficients.push_back( -0.0953436023628 );
+   fFisherCoefficients.push_back( -0.045195527893 );
+   fFisherCoefficients.push_back( 0.0906445795938 );
+   fFisherCoefficients.push_back( -0.0375226425349 );
+   fFisherCoefficients.push_back( 0.375768781232 );
+   fFisherCoefficients.push_back( 0.150303973326 );
+   fFisherCoefficients.push_back( 0.603293474894 );
+   fFisherCoefficients.push_back( 0.400046396377 );
+   fFisherCoefficients.push_back( -0.0674902061199 );
+   fFisherCoefficients.push_back( 0.010217117026 );
+   fFisherCoefficients.push_back( -0.00736885462191 );
+   fFisherCoefficients.push_back( 0.131510369054 );
+   fFisherCoefficients.push_back( -0.238287491374 );
+   fFisherCoefficients.push_back( -0.408945258566 );
+   fFisherCoefficients.push_back( 0.265681470704 );
+   fFisherCoefficients.push_back( 0.091443779261 );
+   fFisherCoefficients.push_back( 1.19378458726 );
+   fFisherCoefficients.push_back( -1.82902194167 );
+   fFisherCoefficients.push_back( -1.05507454549 );
+   fFisherCoefficients.push_back( 0.268496229531 );
+   fFisherCoefficients.push_back( -0.215781619988 );
+   fFisherCoefficients.push_back( -0.918083717833 );
+   fFisherCoefficients.push_back( 61307.1512963 );
+   fFisherCoefficients.push_back( 61850.3472022 );
+   fFisherCoefficients.push_back( -59538.7231103 );
+   fFisherCoefficients.push_back( -61839.5728384 );
+   fFisherCoefficients.push_back( 0.391099301529 );
+   fFisherCoefficients.push_back( -140861.670351 );
+   fFisherCoefficients.push_back( -119346.364582 );
+   fFisherCoefficients.push_back( 119363.434016 );
+   fFisherCoefficients.push_back( 140787.878329 );
+   fFisherCoefficients.push_back( 0.390076752956 );
+   fFisherCoefficients.push_back( 0.0334918017896 );
+   fFisherCoefficients.push_back( -0.00191986112692 );
+   fFisherCoefficients.push_back( 0.229003707959 );
+   fFisherCoefficients.push_back( 0.25439333685 );
+   fFisherCoefficients.push_back( -1.54646314662 );
+   fFisherCoefficients.push_back( 0.262622190491 );
 
    // sanity check
    if (fFisherCoefficients.size() != fNvars) {
@@ -414,12 +425,400 @@ inline void ReadFisher::Clear()
                  varIt != inputValues.end(); varIt++, ivar++) {
                iV.push_back(NormVariable( *varIt, fVmin[ivar], fVmax[ivar] ));
             }
+            Transform( iV, -1 );
             retval = GetMvaValue__( iV );
          }
          else {
-            retval = GetMvaValue__( inputValues );
+            std::vector<double> iV;
+            int ivar = 0;
+            for (std::vector<double>::const_iterator varIt = inputValues.begin();
+                 varIt != inputValues.end(); varIt++, ivar++) {
+               iV.push_back(*varIt);
+            }
+            Transform( iV, -1 );
+            retval = GetMvaValue__( iV );
          }
       }
 
       return retval;
    }
+
+//_______________________________________________________________________
+inline void ReadFisher::InitTransform_1()
+{
+   // Normalization transformation, initialisation
+   fMin_1[0][0] = 656194.875;
+   fMax_1[0][0] = 2500000;
+   fMin_1[1][0] = 509029.90625;
+   fMax_1[1][0] = 2500000;
+   fMin_1[2][0] = 509029.90625;
+   fMax_1[2][0] = 2500000;
+   fMin_1[0][1] = 25006.7910156;
+   fMax_1[0][1] = 700000;
+   fMin_1[1][1] = 25024.984375;
+   fMax_1[1][1] = 700000;
+   fMin_1[2][1] = 25006.7910156;
+   fMax_1[2][1] = 700000;
+   fMin_1[0][2] = 25007.9375;
+   fMax_1[0][2] = 700000;
+   fMin_1[1][2] = 25066.3261719;
+   fMax_1[1][2] = 700000;
+   fMin_1[2][2] = 25007.9375;
+   fMax_1[2][2] = 700000;
+   fMin_1[0][3] = 20007.3261719;
+   fMax_1[0][3] = 1097042.25;
+   fMin_1[1][3] = 20072.9589844;
+   fMax_1[1][3] = 906612.9375;
+   fMin_1[2][3] = 20007.3261719;
+   fMax_1[2][3] = 1097042.25;
+   fMin_1[0][4] = -2.47533321381;
+   fMax_1[0][4] = 2.4819419384;
+   fMin_1[1][4] = -2.4540002346;
+   fMax_1[1][4] = 2.398478508;
+   fMin_1[2][4] = -2.47533321381;
+   fMax_1[2][4] = 2.4819419384;
+   fMin_1[0][5] = -3.14097976685;
+   fMax_1[0][5] = 3.14153909683;
+   fMin_1[1][5] = -3.14132118225;
+   fMax_1[1][5] = 3.14025306702;
+   fMin_1[2][5] = -3.14132118225;
+   fMax_1[2][5] = 3.14153909683;
+   fMin_1[0][6] = 988.338867188;
+   fMax_1[0][6] = 1212683.875;
+   fMin_1[1][6] = 1924.57336426;
+   fMax_1[1][6] = 733209.875;
+   fMin_1[2][6] = 988.338867188;
+   fMax_1[2][6] = 1212683.875;
+   fMin_1[0][7] = -3.14142751694;
+   fMax_1[0][7] = 3.14110827446;
+   fMin_1[1][7] = -3.13981246948;
+   fMax_1[1][7] = 3.13971567154;
+   fMin_1[2][7] = -3.14142751694;
+   fMax_1[2][7] = 3.14110827446;
+   fMin_1[0][8] = 3;
+   fMax_1[0][8] = 14;
+   fMin_1[1][8] = 3;
+   fMax_1[1][8] = 12;
+   fMin_1[2][8] = 3;
+   fMax_1[2][8] = 14;
+   fMin_1[0][9] = 60000.265625;
+   fMax_1[0][9] = 179855.5625;
+   fMin_1[1][9] = 60007.3710938;
+   fMax_1[1][9] = 145783.171875;
+   fMin_1[2][9] = 60000.265625;
+   fMax_1[2][9] = 179855.5625;
+   fMin_1[0][10] = 0;
+   fMax_1[0][10] = 5;
+   fMin_1[1][10] = 0;
+   fMax_1[1][10] = 4;
+   fMin_1[2][10] = 0;
+   fMax_1[2][10] = 5;
+   fMin_1[0][11] = 6.92663526535;
+   fMax_1[0][11] = 1539711.625;
+   fMin_1[1][11] = 14.7136697769;
+   fMax_1[1][11] = 897116.8125;
+   fMin_1[2][11] = 6.92663526535;
+   fMax_1[2][11] = 1539711.625;
+   fMin_1[0][12] = 250024.578125;
+   fMax_1[0][12] = 1428809;
+   fMin_1[1][12] = 250003.984375;
+   fMax_1[1][12] = 1104952.125;
+   fMin_1[2][12] = 250003.984375;
+   fMax_1[2][12] = 1428809;
+   fMin_1[0][13] = -2.19293570518;
+   fMax_1[0][13] = 2.14992332458;
+   fMin_1[1][13] = -2.33010792732;
+   fMax_1[1][13] = 2.25264978409;
+   fMin_1[2][13] = -2.33010792732;
+   fMax_1[2][13] = 2.25264978409;
+   fMin_1[0][14] = -3.14123415947;
+   fMax_1[0][14] = 3.14133787155;
+   fMin_1[1][14] = -3.14103412628;
+   fMax_1[1][14] = 3.14146661758;
+   fMin_1[2][14] = -3.14123415947;
+   fMax_1[2][14] = 3.14146661758;
+   fMin_1[0][15] = 60000.265625;
+   fMax_1[0][15] = 109937.414062;
+   fMin_1[1][15] = 60007.3710938;
+   fMax_1[1][15] = 109307.53125;
+   fMin_1[2][15] = 60000.265625;
+   fMax_1[2][15] = 109937.414062;
+   fMin_1[0][16] = -1;
+   fMax_1[0][16] = 0.772672593594;
+   fMin_1[1][16] = -1;
+   fMax_1[1][16] = 0.75494235754;
+   fMin_1[2][16] = -1;
+   fMax_1[2][16] = 0.772672593594;
+   fMin_1[0][17] = 1296.06591797;
+   fMax_1[0][17] = 1374306.875;
+   fMin_1[1][17] = 5387.9765625;
+   fMax_1[1][17] = 878536.375;
+   fMin_1[2][17] = 1296.06591797;
+   fMax_1[2][17] = 1374306.875;
+   fMin_1[0][18] = -4.75985717773;
+   fMax_1[0][18] = 6.55746221542;
+   fMin_1[1][18] = -4.1175570488;
+   fMax_1[1][18] = 4.16320085526;
+   fMin_1[2][18] = -4.75985717773;
+   fMax_1[2][18] = 6.55746221542;
+   fMin_1[0][19] = -3.13974118233;
+   fMax_1[0][19] = 3.14140701294;
+   fMin_1[1][19] = -3.13956427574;
+   fMax_1[1][19] = 3.13840198517;
+   fMin_1[2][19] = -3.13974118233;
+   fMax_1[2][19] = 3.14140701294;
+   fMin_1[0][20] = 80394.3984375;
+   fMax_1[0][20] = 1539711.625;
+   fMin_1[1][20] = 80395.4921875;
+   fMax_1[1][20] = 897116.8125;
+   fMin_1[2][20] = 80394.3984375;
+   fMax_1[2][20] = 1539711.625;
+   fMin_1[0][21] = 25007.9375;
+   fMax_1[0][21] = 1169934.875;
+   fMin_1[1][21] = 25066.3261719;
+   fMax_1[1][21] = 1307815.875;
+   fMin_1[2][21] = 25007.9375;
+   fMax_1[2][21] = 1307815.875;
+   fMin_1[0][22] = 25006.7910156;
+   fMax_1[0][22] = 1480084;
+   fMin_1[1][22] = 25024.984375;
+   fMax_1[1][22] = 1120832.25;
+   fMin_1[2][22] = 25006.7910156;
+   fMax_1[2][22] = 1480084;
+   fMin_1[0][23] = 5714.87841797;
+   fMax_1[0][23] = 1496589.375;
+   fMin_1[1][23] = 15620.9775391;
+   fMax_1[1][23] = 1105221.125;
+   fMin_1[2][23] = 5714.87841797;
+   fMax_1[2][23] = 1496589.375;
+   fMin_1[0][24] = 4196.60595703;
+   fMax_1[0][24] = 1438302.875;
+   fMin_1[1][24] = 32876.2382812;
+   fMax_1[1][24] = 1173914.875;
+   fMin_1[2][24] = 4196.60595703;
+   fMax_1[2][24] = 1438302.875;
+   fMin_1[0][25] = 0.118681840599;
+   fMax_1[0][25] = 4.50309705734;
+   fMin_1[1][25] = 0.212075054646;
+   fMax_1[1][25] = 4.34393835068;
+   fMin_1[2][25] = 0.118681840599;
+   fMax_1[2][25] = 4.50309705734;
+   fMin_1[0][26] = 0.400706261396;
+   fMax_1[0][26] = 5.07148122787;
+   fMin_1[1][26] = 0.400214612484;
+   fMax_1[1][26] = 4.46510267258;
+   fMin_1[2][26] = 0.400214612484;
+   fMax_1[2][26] = 5.07148122787;
+   fMin_1[0][27] = 0.401370584965;
+   fMax_1[0][27] = 5.1140370369;
+   fMin_1[1][27] = 0.403047084808;
+   fMax_1[1][27] = 4.92583847046;
+   fMin_1[2][27] = 0.401370584965;
+   fMax_1[2][27] = 5.1140370369;
+   fMin_1[0][28] = 0.400706261396;
+   fMax_1[0][28] = 4.93675470352;
+   fMin_1[1][28] = 0.400214612484;
+   fMax_1[1][28] = 4.92583847046;
+   fMin_1[2][28] = 0.400214612484;
+   fMax_1[2][28] = 4.93675470352;
+   fMin_1[0][29] = 0.40218693018;
+   fMax_1[0][29] = 5.1140370369;
+   fMin_1[1][29] = 0.403249502182;
+   fMax_1[1][29] = 4.46510267258;
+   fMin_1[2][29] = 0.40218693018;
+   fMax_1[2][29] = 5.1140370369;
+   fMin_1[0][30] = 0.0196545533836;
+   fMax_1[0][30] = 7.90818357468;
+   fMin_1[1][30] = 0.0351399816573;
+   fMax_1[1][30] = 5.8540520668;
+   fMin_1[2][30] = 0.0196545533836;
+   fMax_1[2][30] = 7.90818357468;
+   fMin_1[0][31] = 0.397312879562;
+   fMax_1[0][31] = 4.74415063858;
+   fMin_1[1][31] = 0.396414637566;
+   fMax_1[1][31] = 5.52754449844;
+   fMin_1[2][31] = 0.396414637566;
+   fMax_1[2][31] = 5.52754449844;
+   fMin_1[0][32] = 0.397040575743;
+   fMax_1[0][32] = 4.7444434166;
+   fMin_1[1][32] = 0.4077924788;
+   fMax_1[1][32] = 4.42310571671;
+   fMin_1[2][32] = 0.397040575743;
+   fMax_1[2][32] = 4.7444434166;
+   fMin_1[0][33] = 0.397040575743;
+   fMax_1[0][33] = 4.7444434166;
+   fMin_1[1][33] = 0.396414637566;
+   fMax_1[1][33] = 4.56018877029;
+   fMin_1[2][33] = 0.396414637566;
+   fMax_1[2][33] = 4.7444434166;
+   fMin_1[0][34] = 0.403430253267;
+   fMax_1[0][34] = 4.74415063858;
+   fMin_1[1][34] = 0.399091243744;
+   fMax_1[1][34] = 5.52754449844;
+   fMin_1[2][34] = 0.399091243744;
+   fMax_1[2][34] = 5.52754449844;
+   fMin_1[0][35] = 0.397040575743;
+   fMax_1[0][35] = 4.04857540131;
+   fMin_1[1][35] = 0.396414637566;
+   fMax_1[1][35] = 4.25239944458;
+   fMin_1[2][35] = 0.396414637566;
+   fMax_1[2][35] = 4.25239944458;
+   fMin_1[0][36] = 0.400706261396;
+   fMax_1[0][36] = 3.91956186295;
+   fMin_1[1][36] = 0.400214612484;
+   fMax_1[1][36] = 4.26060628891;
+   fMin_1[2][36] = 0.400214612484;
+   fMax_1[2][36] = 4.26060628891;
+   fMin_1[0][37] = 0.380293309689;
+   fMax_1[0][37] = 3.63540410995;
+   fMin_1[1][37] = 0.394029647112;
+   fMax_1[1][37] = 3.12130403519;
+   fMin_1[2][37] = 0.380293309689;
+   fMax_1[2][37] = 3.63540410995;
+   fMin_1[0][38] = 0.400706261396;
+   fMax_1[0][38] = 3.63768362999;
+   fMin_1[1][38] = 0.400214612484;
+   fMax_1[1][38] = 3.14345645905;
+   fMin_1[2][38] = 0.400214612484;
+   fMax_1[2][38] = 3.63768362999;
+   fMin_1[0][39] = 63800.75;
+   fMax_1[0][39] = 2115952.5;
+   fMin_1[1][39] = 77291.421875;
+   fMax_1[1][39] = 2079320;
+   fMin_1[2][39] = 63800.75;
+   fMax_1[2][39] = 2115952.5;
+   fMin_1[0][40] = 656194.875;
+   fMax_1[0][40] = 3296757.25;
+   fMin_1[1][40] = 509029.90625;
+   fMax_1[1][40] = 2813130;
+   fMin_1[2][40] = 509029.90625;
+   fMax_1[2][40] = 3296757.25;
+   fMin_1[0][41] = 78595.5078125;
+   fMax_1[0][41] = 1807815.875;
+   fMin_1[1][41] = 75616.296875;
+   fMax_1[1][41] = 1656369.875;
+   fMin_1[2][41] = 75616.296875;
+   fMax_1[2][41] = 1807815.875;
+}
+
+//_______________________________________________________________________
+inline void ReadFisher::Transform_1( std::vector<double>& iv, int cls) const
+{
+   // Normalization transformation
+   if (cls < 0 || cls > 2) {
+   if (2 > 1 ) cls = 2;
+      else cls = 2;
+   }
+   const int nVar = 42;
+
+   // get indices of used variables
+
+   // define the indices of the variables which are transformed by this transformation
+   std::vector<int> indicesGet;
+   std::vector<int> indicesPut;
+
+   indicesGet.push_back( 0);
+   indicesGet.push_back( 1);
+   indicesGet.push_back( 2);
+   indicesGet.push_back( 3);
+   indicesGet.push_back( 4);
+   indicesGet.push_back( 5);
+   indicesGet.push_back( 6);
+   indicesGet.push_back( 7);
+   indicesGet.push_back( 8);
+   indicesGet.push_back( 9);
+   indicesGet.push_back( 10);
+   indicesGet.push_back( 11);
+   indicesGet.push_back( 12);
+   indicesGet.push_back( 13);
+   indicesGet.push_back( 14);
+   indicesGet.push_back( 15);
+   indicesGet.push_back( 16);
+   indicesGet.push_back( 17);
+   indicesGet.push_back( 18);
+   indicesGet.push_back( 19);
+   indicesGet.push_back( 20);
+   indicesGet.push_back( 21);
+   indicesGet.push_back( 22);
+   indicesGet.push_back( 23);
+   indicesGet.push_back( 24);
+   indicesGet.push_back( 25);
+   indicesGet.push_back( 26);
+   indicesGet.push_back( 27);
+   indicesGet.push_back( 28);
+   indicesGet.push_back( 29);
+   indicesGet.push_back( 30);
+   indicesGet.push_back( 31);
+   indicesGet.push_back( 32);
+   indicesGet.push_back( 33);
+   indicesGet.push_back( 34);
+   indicesGet.push_back( 35);
+   indicesGet.push_back( 36);
+   indicesGet.push_back( 37);
+   indicesGet.push_back( 38);
+   indicesGet.push_back( 39);
+   indicesGet.push_back( 40);
+   indicesGet.push_back( 41);
+   indicesPut.push_back( 0);
+   indicesPut.push_back( 1);
+   indicesPut.push_back( 2);
+   indicesPut.push_back( 3);
+   indicesPut.push_back( 4);
+   indicesPut.push_back( 5);
+   indicesPut.push_back( 6);
+   indicesPut.push_back( 7);
+   indicesPut.push_back( 8);
+   indicesPut.push_back( 9);
+   indicesPut.push_back( 10);
+   indicesPut.push_back( 11);
+   indicesPut.push_back( 12);
+   indicesPut.push_back( 13);
+   indicesPut.push_back( 14);
+   indicesPut.push_back( 15);
+   indicesPut.push_back( 16);
+   indicesPut.push_back( 17);
+   indicesPut.push_back( 18);
+   indicesPut.push_back( 19);
+   indicesPut.push_back( 20);
+   indicesPut.push_back( 21);
+   indicesPut.push_back( 22);
+   indicesPut.push_back( 23);
+   indicesPut.push_back( 24);
+   indicesPut.push_back( 25);
+   indicesPut.push_back( 26);
+   indicesPut.push_back( 27);
+   indicesPut.push_back( 28);
+   indicesPut.push_back( 29);
+   indicesPut.push_back( 30);
+   indicesPut.push_back( 31);
+   indicesPut.push_back( 32);
+   indicesPut.push_back( 33);
+   indicesPut.push_back( 34);
+   indicesPut.push_back( 35);
+   indicesPut.push_back( 36);
+   indicesPut.push_back( 37);
+   indicesPut.push_back( 38);
+   indicesPut.push_back( 39);
+   indicesPut.push_back( 40);
+   indicesPut.push_back( 41);
+
+   std::vector<double> dv(nVar);
+   for (int ivar=0; ivar<nVar; ivar++) dv[ivar] = iv[indicesGet.at(ivar)];
+   for (int ivar=0;ivar<42;ivar++) {
+      double offset = fMin_1[cls][ivar];
+      double scale  = 1.0/(fMax_1[cls][ivar]-fMin_1[cls][ivar]);
+      iv[indicesPut.at(ivar)] = (dv[ivar]-offset)*scale * 2 - 1;
+   }
+}
+
+//_______________________________________________________________________
+inline void ReadFisher::InitTransform()
+{
+   InitTransform_1();
+}
+
+//_______________________________________________________________________
+inline void ReadFisher::Transform( std::vector<double>& iv, int sigOrBgd ) const
+{
+   Transform_1( iv, sigOrBgd );
+}
