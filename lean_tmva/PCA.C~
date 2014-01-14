@@ -161,7 +161,7 @@ void PCA() {
 	        "nTrain_Signal=0:nTrain_Background=0:SplitMode=Random:NormMode=NumEvents:!V" );
 
 
-    factory->BookMethod( TMVA::Types::kLD, "LD", "H:!V:VarTransform=Normalisation:CreateMVAPdfs:PDFInterpolMVAPdf=Spline2:NbinsMVAPdf=50:NsmoothMVAPdf=10" );
+    factory->BookMethod( TMVA::Types::kLD, "LD", "H:!V:VarTransform=Norm:CreateMVAPdfs:PDFInterpolMVAPdf=Spline2:NbinsMVAPdf=50:NsmoothMVAPdf=10" );
     
     // ---- Book MVA methods
     //
@@ -188,8 +188,8 @@ void PCA() {
 
     // --------------------------------------------------------------
     
-    TMVA::IMethod* myLD = reader->FindMVA( "LD" ); 
-    const TMVA::Event* ev = myLD->GetEvent();
+    //TMVA::IMethod* myLD = reader->FindMVA( "LD" ); 
+    //const TMVA::Event* ev = myLD->GetEvent();
     
     
     // Save the output
