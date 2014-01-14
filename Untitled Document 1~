@@ -1,0 +1,9 @@
+#!/usr/bin/python2.7
+import re
+
+ufile = open("fisher_weights.txt")
+
+text = ""
+for line in ufile.readlines():
+    text += line
+    

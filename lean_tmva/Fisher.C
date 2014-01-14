@@ -117,7 +117,8 @@ void Fisher() {
     
     for (int i = 0; i < variables.size(); i++) {
         const std::vector<TString>& tup = variables[i];
-        if (tup[1][0] == 'a') continue;
+        if (tup[1] == "analysis_channel") continue;
+        cout << "Adding variable: " << tup[1] << endl;
         factory->AddVariable(tup[0], tup[1], tup[2], tup[3][0]);
     }
 	std::cout << "================================================" << std::endl;
@@ -166,13 +167,6 @@ void Fisher() {
     //
     // Please lookup the various method configuration options in the corresponding cxx files, eg:
     // src/MethoCuts.cxx, etc, or here: http://tmva.sourceforge.net/optionRef.html
-
-
-    // TMVA ANN: MLP (recommended ANN) -- all ANNs in TMVA are Multilayer Perceptrons
-    //factory->BookMethod( Types::kMLP, "MLP", "!H:!V:NeuronType=tanh:VarTransform=N:NCycles=600:HiddenLayers=N+5:TestRate=5:!UseRegulator" );
-
-    // Boosted decision trees
-    //factory->BookMethod( Types::kBDT, "BDTG","!H:!V:NTrees=2000::BoostType=Grad:Shrinkage=0.1:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=3:MaxDepth=4" );
 		        
     // ---- Now you can tell the factory to train, test, and evaluate the MVAs
 
@@ -186,10 +180,6 @@ void Fisher() {
     factory->EvaluateAllMethods();
 
     // --------------------------------------------------------------
-    
-    //TMVA::IMethod* myFisher = reader->FindMVA( "Fisher" ); 
-    //const TMVA::Event* ev = myFisher->GetEvent();
-    
     
     // Save the output
     outputFile->Close();
