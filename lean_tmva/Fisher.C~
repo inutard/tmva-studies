@@ -51,7 +51,7 @@
 
 using namespace TMVA;
 
-void PCA() {
+void Fisher() {
 	//---------------------------------------------------------------
 	// This loads the library
 	Tools::Instance();
@@ -160,7 +160,7 @@ void PCA() {
 	        "nTrain_Signal=0:nTrain_Background=0:SplitMode=Random:NormMode=NumEvents:!V" );
 
 
-    factory->BookMethod( TMVA::Types::kLD, "LD", "H:!V:VarTransform=PCA-transformation:CreateMVAPdfs:PDFInterpolMVAPdf=Spline2:NbinsMVAPdf=50:NsmoothMVAPdf=10" );
+    factory->BookMethod( TMVA::Types::kFisher, "Fisher", "H:!V:Fisher:VarTransform=None:CreateMVAPdfs:PDFInterpolMVAPdf=Spline2:NbinsMVAPdf=50:NsmoothMVAPdf=10" );
     
     // ---- Book MVA methods
     //
@@ -187,8 +187,8 @@ void PCA() {
 
     // --------------------------------------------------------------
     
-    TMVA::IMethod* myLD = reader->FindMVA( "LD" ); 
-    const TMVA::Event* ev = myLD->GetEvent();
+    TMVA::IMethod* myFisher = reader->FindMVA( "Fisher" ); 
+    const TMVA::Event* ev = myFisher->GetEvent();
     
     
     // Save the output

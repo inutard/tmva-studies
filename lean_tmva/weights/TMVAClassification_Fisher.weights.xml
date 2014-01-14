@@ -1,0 +1,130 @@
+<?xml version="1.0"?>
+<MethodSetup Method="Fisher::Fisher">
+  <GeneralInfo>
+    <Info name="TMVA Release" value="4.1.4 [262404]"/>
+    <Info name="ROOT Release" value="5.34/09 [336393]"/>
+    <Info name="Creator" value="inutard"/>
+    <Info name="Date" value="Mon Jan 13 21:22:11 2014"/>
+    <Info name="Host" value="Linux panlong 3.2.0-37-generic #58-Ubuntu SMP Thu Jan 24 15:28:10 UTC 2013 x86_64 x86_64 x86_64 GNU/Linux"/>
+    <Info name="Dir" value="/home/inutard/Desktop/tmva-studies/lean_tmva"/>
+    <Info name="Training events" value="23465"/>
+    <Info name="TrainingTime" value="5.84411144e-01"/>
+    <Info name="AnalysisType" value="Classification"/>
+  </GeneralInfo>
+  <Options>
+    <Option name="V" modified="Yes">False</Option>
+    <Option name="VerbosityLevel" modified="No">Default</Option>
+    <Option name="VarTransform" modified="Yes">None</Option>
+    <Option name="H" modified="Yes">True</Option>
+    <Option name="CreateMVAPdfs" modified="Yes">True</Option>
+    <Option name="IgnoreNegWeightsInTraining" modified="No">False</Option>
+    <Option name="Method" modified="Yes">Fisher</Option>
+  </Options>
+  <Variables NVar="42">
+    <Variable VarIndex="0" Expression="(Ht&gt;2500e3)?2500e3:Ht" Label="(Ht&gt;2500e3)?2500e3:Ht" Title="Ht" Unit="MeV" Internal="_Ht_2500e3__2500e3:Ht" Type="F" Min="5.09029906e+05" Max="2.50000000e+06"/>
+    <Variable VarIndex="1" Expression="(b_had_pt&gt;700e3)?700e3:b_had_pt" Label="(b_had_pt&gt;700e3)?700e3:b_had_pt" Title="Pt(b_had)" Unit="MeV" Internal="_b_had_pt_700e3__700e3:b_had_pt" Type="F" Min="2.50067910e+04" Max="7.00000000e+05"/>
+    <Variable VarIndex="2" Expression="(b_lep_pt&gt;700e3)?700e3:b_lep_pt" Label="(b_lep_pt&gt;700e3)?700e3:b_lep_pt" Title="Pt(b_lep)" Unit="MeV" Internal="_b_lep_pt_700e3__700e3:b_lep_pt" Type="F" Min="2.50079375e+04" Max="7.00000000e+05"/>
+    <Variable VarIndex="3" Expression="lep_pt" Label="lep_pt" Title="lep_pt" Unit="nan" Internal="lep_pt" Type="F" Min="2.00073262e+04" Max="1.09704225e+06"/>
+    <Variable VarIndex="4" Expression="lep_eta" Label="lep_eta" Title="lep_eta" Unit="nan" Internal="lep_eta" Type="F" Min="-2.47533321e+00" Max="2.48194194e+00"/>
+    <Variable VarIndex="5" Expression="lep_phi" Label="lep_phi" Title="lep_phi" Unit="nan" Internal="lep_phi" Type="F" Min="-3.14132118e+00" Max="3.14153910e+00"/>
+    <Variable VarIndex="6" Expression="met_et" Label="met_et" Title="met_et" Unit="nan" Internal="met_et" Type="F" Min="9.88338867e+02" Max="1.21268388e+06"/>
+    <Variable VarIndex="7" Expression="met_phi" Label="met_phi" Title="met_phi" Unit="nan" Internal="met_phi" Type="F" Min="-3.14142752e+00" Max="3.14110827e+00"/>
+    <Variable VarIndex="8" Expression="jet_n" Label="jet_n" Title="jet_n" Unit="nan" Internal="jet_n" Type="i" Min="3.00000000e+00" Max="1.40000000e+01"/>
+    <Variable VarIndex="9" Expression="jet_m_max" Label="jet_m_max" Title="jet_m_max" Unit="nan" Internal="jet_m_max" Type="F" Min="6.00002656e+04" Max="1.79855562e+05"/>
+    <Variable VarIndex="10" Expression="n_btags_70" Label="n_btags_70" Title="n_btags_70" Unit="nan" Internal="n_btags_70" Type="I" Min="0.00000000e+00" Max="5.00000000e+00"/>
+    <Variable VarIndex="11" Expression="mwt" Label="mwt" Title="mwt" Unit="nan" Internal="mwt" Type="F" Min="6.92663527e+00" Max="1.53971162e+06"/>
+    <Variable VarIndex="12" Expression="Whad_pt" Label="Whad_pt" Title="Whad_pt" Unit="nan" Internal="Whad_pt" Type="F" Min="2.50003984e+05" Max="1.42880900e+06"/>
+    <Variable VarIndex="13" Expression="Whad_eta" Label="Whad_eta" Title="Whad_eta" Unit="nan" Internal="Whad_eta" Type="F" Min="-2.33010793e+00" Max="2.25264978e+00"/>
+    <Variable VarIndex="14" Expression="Whad_phi" Label="Whad_phi" Title="Whad_phi" Unit="nan" Internal="Whad_phi" Type="F" Min="-3.14123416e+00" Max="3.14146662e+00"/>
+    <Variable VarIndex="15" Expression="Whad_m" Label="Whad_m" Title="Whad_m" Unit="nan" Internal="Whad_m" Type="F" Min="6.00002656e+04" Max="1.09937414e+05"/>
+    <Variable VarIndex="16" Expression="Whad_dR" Label="Whad_dR" Title="Whad_dR" Unit="nan" Internal="Whad_dR" Type="F" Min="-1.00000000e+00" Max="7.72672594e-01"/>
+    <Variable VarIndex="17" Expression="Wlep_pt" Label="Wlep_pt" Title="Wlep_pt" Unit="nan" Internal="Wlep_pt" Type="F" Min="1.29606592e+03" Max="1.37430688e+06"/>
+    <Variable VarIndex="18" Expression="Wlep_eta" Label="Wlep_eta" Title="Wlep_eta" Unit="nan" Internal="Wlep_eta" Type="F" Min="-4.75985718e+00" Max="6.55746222e+00"/>
+    <Variable VarIndex="19" Expression="Wlep_phi" Label="Wlep_phi" Title="Wlep_phi" Unit="nan" Internal="Wlep_phi" Type="F" Min="-3.13974118e+00" Max="3.14140701e+00"/>
+    <Variable VarIndex="20" Expression="Wlep_m" Label="Wlep_m" Title="Wlep_m" Unit="nan" Internal="Wlep_m" Type="F" Min="8.03943984e+04" Max="1.53971162e+06"/>
+    <Variable VarIndex="21" Expression="b_lep_pt" Label="b_lep_pt" Title="b_lep_pt" Unit="nan" Internal="b_lep_pt" Type="F" Min="2.50079375e+04" Max="1.30781588e+06"/>
+    <Variable VarIndex="22" Expression="b_had_pt" Label="b_had_pt" Title="b_had_pt" Unit="nan" Internal="b_had_pt" Type="F" Min="2.50067910e+04" Max="1.48008400e+06"/>
+    <Variable VarIndex="23" Expression="tprime_lep_pt" Label="tprime_lep_pt" Title="tprime_lep_pt" Unit="nan" Internal="tprime_lep_pt" Type="F" Min="5.71487842e+03" Max="1.49658938e+06"/>
+    <Variable VarIndex="24" Expression="tprime_had_pt" Label="tprime_had_pt" Title="tprime_had_pt" Unit="nan" Internal="tprime_had_pt" Type="F" Min="4.19660596e+03" Max="1.43830288e+06"/>
+    <Variable VarIndex="25" Expression="dR_lnu" Label="dR_lnu" Title="dR_lnu" Unit="nan" Internal="dR_lnu" Type="F" Min="1.18681841e-01" Max="4.50309706e+00"/>
+    <Variable VarIndex="26" Expression="dR_lb_lep" Label="dR_lb_lep" Title="dR_lb_lep" Unit="nan" Internal="dR_lb_lep" Type="F" Min="4.00214612e-01" Max="5.07148123e+00"/>
+    <Variable VarIndex="27" Expression="dR_lb_had" Label="dR_lb_had" Title="dR_lb_had" Unit="nan" Internal="dR_lb_had" Type="F" Min="4.01370585e-01" Max="5.11403704e+00"/>
+    <Variable VarIndex="28" Expression="dR_lb1" Label="dR_lb1" Title="dR_lb1" Unit="nan" Internal="dR_lb1" Type="F" Min="4.00214612e-01" Max="4.93675470e+00"/>
+    <Variable VarIndex="29" Expression="dR_lb2" Label="dR_lb2" Title="dR_lb2" Unit="nan" Internal="dR_lb2" Type="F" Min="4.02186930e-01" Max="5.11403704e+00"/>
+    <Variable VarIndex="30" Expression="dR_Wlep_blep" Label="dR_Wlep_blep" Title="dR_Wlep_blep" Unit="nan" Internal="dR_Wlep_blep" Type="F" Min="1.96545534e-02" Max="7.90818357e+00"/>
+    <Variable VarIndex="31" Expression="dR_Whad_blep" Label="dR_Whad_blep" Title="dR_Whad_blep" Unit="nan" Internal="dR_Whad_blep" Type="F" Min="3.96414638e-01" Max="5.52754450e+00"/>
+    <Variable VarIndex="32" Expression="dR_Whad_bhad" Label="dR_Whad_bhad" Title="dR_Whad_bhad" Unit="nan" Internal="dR_Whad_bhad" Type="F" Min="3.97040576e-01" Max="4.74444342e+00"/>
+    <Variable VarIndex="33" Expression="dR_Whad_b1" Label="dR_Whad_b1" Title="dR_Whad_b1" Unit="nan" Internal="dR_Whad_b1" Type="F" Min="3.96414638e-01" Max="4.74444342e+00"/>
+    <Variable VarIndex="34" Expression="dR_Whad_b2" Label="dR_Whad_b2" Title="dR_Whad_b2" Unit="nan" Internal="dR_Whad_b2" Type="F" Min="3.99091244e-01" Max="5.52754450e+00"/>
+    <Variable VarIndex="35" Expression="mindR_Whad_b" Label="mindR_Whad_b" Title="mindR_Whad_b" Unit="nan" Internal="mindR_Whad_b" Type="F" Min="3.96414638e-01" Max="4.25239944e+00"/>
+    <Variable VarIndex="36" Expression="mindR_lb" Label="mindR_lb" Title="mindR_lb" Unit="nan" Internal="mindR_lb" Type="F" Min="4.00214612e-01" Max="4.26060629e+00"/>
+    <Variable VarIndex="37" Expression="mindR_jj" Label="mindR_jj" Title="mindR_jj" Unit="nan" Internal="mindR_jj" Type="F" Min="3.80293310e-01" Max="3.63540411e+00"/>
+    <Variable VarIndex="38" Expression="mindR_lj" Label="mindR_lj" Title="mindr_lj" Unit="nan" Internal="mindR_lj" Type="F" Min="4.00214612e-01" Max="3.63768363e+00"/>
+    <Variable VarIndex="39" Expression="Mjj_hpt" Label="Mjj_hpt" Title="Mjj_hpt" Unit="nan" Internal="Mjj_hpt" Type="F" Min="6.38007500e+04" Max="2.11595250e+06"/>
+    <Variable VarIndex="40" Expression="Ht" Label="Ht" Title="Ht" Unit="nan" Internal="Ht" Type="F" Min="5.09029906e+05" Max="3.29675725e+06"/>
+    <Variable VarIndex="41" Expression="m_reco" Label="m_reco" Title="m_reco" Unit="nan" Internal="m_reco" Type="F" Min="7.56162969e+04" Max="1.80781588e+06"/>
+  </Variables>
+  <Spectators NSpec="0"/>
+  <Classes NClass="2">
+    <Class Name="Signal" Index="0"/>
+    <Class Name="Background" Index="1"/>
+  </Classes>
+  <Transformations NTransformations="0"/>
+  <MVAPdfs>
+    <PDF Name="Fisher_PDFSig" MinNSmooth="10" MaxNSmooth="10" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+      <Histogram Name="Fisher_tr_S_original" NBins="50" XMin="-2.0342693328857422e+00" XMax="3.3297171592712402e+00" HasEquidistantBins="1">
+        7.10650046e-04 0.00000000e+00 7.96757114e-04 4.33881200e-04 1.87041637e-03 2.38546499e-03 1.95053536e-03 3.49816019e-03 7.68356835e-03 1.11364152e-02 1.39810818e-02 3.47548442e-02 3.14187472e-02 6.36358998e-02 9.62828196e-02 1.36444700e-01 1.70646332e-01 2.42032936e-01 3.02592168e-01 4.55869088e-01 5.52537914e-01 6.62338121e-01 7.89346126e-01 9.29407762e-01 1.00691369e+00 9.99007827e-01 8.80857249e-01 7.34254229e-01 4.93034889e-01 3.03659537e-01 1.77357556e-01 1.09316675e-01 4.76331094e-02 3.08766221e-02 1.34793383e-02 4.40058162e-03 4.41319948e-03 2.47534414e-03 1.38487565e-03 2.54457123e-04 0.00000000e+00 3.51843448e-04 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 
+      </Histogram>
+    </PDF>
+    <PDF Name="Fisher_PDFBkg" MinNSmooth="10" MaxNSmooth="10" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+      <Histogram Name="Fisher_tr_B_original" NBins="50" XMin="-2.0342693328857422e+00" XMax="3.3297171592712402e+00" HasEquidistantBins="1">
+        4.64356725e-02 7.19480223e-02 9.49495730e-03 2.87316510e-02 1.16801860e-01 1.07144368e-01 1.57732408e-01 3.37990132e-01 4.27427051e-01 3.82084605e-01 4.73845813e-01 7.50368678e-01 9.69262750e-01 7.24166874e-01 9.32041366e-01 6.14213082e-01 7.08133604e-01 5.74172315e-01 4.63015997e-01 3.76655792e-01 2.58592555e-01 2.98429059e-01 2.23328580e-01 6.01931141e-02 5.33076251e-02 7.36156163e-02 1.20078162e-02 2.12734151e-03 3.90819859e-02 7.35886233e-03 2.20431545e-03 0.00000000e+00 1.79414558e-02 1.57008664e-03 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 
+      </Histogram>
+    </PDF>
+  </MVAPdfs>
+  <Weights NCoeff="43">
+    <Coefficient Index="0" Value="-2.7027074957876622e+00"/>
+    <Coefficient Index="1" Value="1.4943559792628211e-06"/>
+    <Coefficient Index="2" Value="2.2674079174948814e-06"/>
+    <Coefficient Index="3" Value="3.7882689588174461e-06"/>
+    <Coefficient Index="4" Value="5.8115372530103456e-07"/>
+    <Coefficient Index="5" Value="-3.8938209870609995e-02"/>
+    <Coefficient Index="6" Value="-1.4287117020654288e-02"/>
+    <Coefficient Index="7" Value="1.5062740924320155e-07"/>
+    <Coefficient Index="8" Value="-1.2055757717388704e-02"/>
+    <Coefficient Index="9" Value="6.8352988015062843e-02"/>
+    <Coefficient Index="10" Value="2.5069608691386302e-06"/>
+    <Coefficient Index="11" Value="2.4119479380771039e-01"/>
+    <Coefficient Index="12" Value="5.1784422684482258e-07"/>
+    <Coefficient Index="13" Value="-1.1457681223860970e-07"/>
+    <Coefficient Index="14" Value="4.5009296221559325e-03"/>
+    <Coefficient Index="15" Value="-2.3519696423721067e-03"/>
+    <Coefficient Index="16" Value="5.2772280678466445e-06"/>
+    <Coefficient Index="17" Value="-2.6934418419004985e-01"/>
+    <Coefficient Index="18" Value="-5.9938332120205377e-07"/>
+    <Coefficient Index="19" Value="4.7293534848557396e-02"/>
+    <Coefficient Index="20" Value="2.9123644016513302e-02"/>
+    <Coefficient Index="21" Value="1.6376820820304151e-06"/>
+    <Coefficient Index="22" Value="-2.8523319121968843e-06"/>
+    <Coefficient Index="23" Value="-1.4434444821148128e-06"/>
+    <Coefficient Index="24" Value="3.6162801729804532e-07"/>
+    <Coefficient Index="25" Value="-3.0250003598921101e-07"/>
+    <Coefficient Index="26" Value="-4.1919205844138441e-01"/>
+    <Coefficient Index="27" Value="-1.4348879605206388e-01"/>
+    <Coefficient Index="28" Value="-2.1152281348660606e-01"/>
+    <Coefficient Index="29" Value="2.6248660488667164e-01"/>
+    <Coefficient Index="30" Value="2.3266345802157551e-01"/>
+    <Coefficient Index="31" Value="9.9162981497485231e-02"/>
+    <Coefficient Index="32" Value="1.8267158741854894e-01"/>
+    <Coefficient Index="33" Value="2.5677319399780524e-01"/>
+    <Coefficient Index="34" Value="-2.9165708215673275e-01"/>
+    <Coefficient Index="35" Value="-3.0606315269433892e-01"/>
+    <Coefficient Index="36" Value="2.0263771984473763e-01"/>
+    <Coefficient Index="37" Value="1.7544870050501336e-02"/>
+    <Coefficient Index="38" Value="-1.1179143435359853e-03"/>
+    <Coefficient Index="39" Value="1.4132414439970264e-01"/>
+    <Coefficient Index="40" Value="2.4801522399569803e-07"/>
+    <Coefficient Index="41" Value="-1.1124364745282046e-06"/>
+    <Coefficient Index="42" Value="3.0498187080904715e-07"/>
+  </Weights>
+</MethodSetup>

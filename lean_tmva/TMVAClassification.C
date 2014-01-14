@@ -160,7 +160,7 @@ void TMVAClassification()
             long long variable_choice = random_ksubset(variables.size(), num_used);
             
             for (int i = 0; i < variables.size(); i++) {
-                if (variables[0][1] == "analysis_channel") continue;
+                if (variables[i][1] == "analysis_channel") continue;
                 long long chosen = variable_choice;
                 chosen &= (1LL << i);
                 if (chosen) {

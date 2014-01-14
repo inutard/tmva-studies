@@ -55,7 +55,6 @@ void PCA() {
 	//---------------------------------------------------------------
 	// This loads the library
 	Tools::Instance();
-    gROOT->LoadMacro("mydyncast.C+");
 
 	std::cout << std::endl;
 	std::cout << "==> Start TMVAClassification" << std::endl;
@@ -98,9 +97,6 @@ void PCA() {
     while (fin >> inp[0] >> inp[1] >> inp[2] >> inp[3]) {
         variables.push_back(inp);
     }
-
-    std::set<method_stats> rankings;
-    const int max_trials = 5;
     
     // Create a ROOT output file where TMVA will store ntuples, histograms, etc.
     TString outfileName( "TMVA.root" );
@@ -118,14 +114,10 @@ void PCA() {
     // front of the "Silent" argument in the option string
     Factory *factory = new Factory( "TMVAClassification", outputFile,
 	        "!V:Silent:Color:DrawProgressBar:AnalysisType=Classification" );
-	        
-	std::cout << std::endl;
-	std::cout << "================================================" << std::endl;
-	//add a random num_used sized subset of variables to train on.
-    long long variable_choice = random_ksubset(variables.size(), num_used);
     
     for (int i = 0; i < variables.size(); i++) {
         const std::vector<TString>& tup = variables[i];
+        if (tup[1][0] == 'a') continue;
         factory->AddVariable(tup[0], tup[1], tup[2], tup[3][0]);
     }
 	std::cout << "================================================" << std::endl;
@@ -167,6 +159,9 @@ void PCA() {
     factory->PrepareTrainingAndTestTree( mycuts, mycutb,
 	        "nTrain_Signal=0:nTrain_Background=0:SplitMode=Random:NormMode=NumEvents:!V" );
 
+
+    factory->BookMethod( TMVA::Types::kLD, "LD", "H:!V:VarTransform=PCA:CreateMVAPdfs:PDFInterpolMVAPdf=Spline2:NbinsMVAPdf=50:NsmoothMVAPdf=10" );
+    
     // ---- Book MVA methods
     //
     // Please lookup the various method configuration options in the corresponding cxx files, eg:
@@ -174,13 +169,10 @@ void PCA() {
 
 
     // TMVA ANN: MLP (recommended ANN) -- all ANNs in TMVA are Multilayer Perceptrons
-    if (Use["MLP"])
-        factory->BookMethod( Types::kMLP, "MLP", "!H:!V:NeuronType=tanh:VarTransform=N:NCycles=600:HiddenLayers=N+5:TestRate=5:!UseRegulator" );
+    //factory->BookMethod( Types::kMLP, "MLP", "!H:!V:NeuronType=tanh:VarTransform=N:NCycles=600:HiddenLayers=N+5:TestRate=5:!UseRegulator" );
 
     // Boosted decision trees
-    if (Use["BDTG"])
-        factory->BookMethod( Types::kBDT, "BDTG",
-		        "!H:!V:NTrees=2000::BoostType=Grad:Shrinkage=0.1:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=3:MaxDepth=4" );
+    //factory->BookMethod( Types::kBDT, "BDTG","!H:!V:NTrees=2000::BoostType=Grad:Shrinkage=0.1:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=3:MaxDepth=4" );
 		        
     // ---- Now you can tell the factory to train, test, and evaluate the MVAs
 
@@ -194,7 +186,11 @@ void PCA() {
     factory->EvaluateAllMethods();
 
     // --------------------------------------------------------------
-
+    
+    TMVA::IMethod* myLD = reader->FindMVA( "LD" ); 
+    const TMVA::Event* ev = myLD->GetEvent();
+    
+    
     // Save the output
     outputFile->Close();
 
