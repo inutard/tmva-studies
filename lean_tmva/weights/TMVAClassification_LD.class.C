@@ -10,7 +10,7 @@ Method         : LD::LD
 TMVA Release   : 4.1.4         [262404]
 ROOT Release   : 5.34/09       [336393]
 Creator        : inutard
-Date           : Tue Jan 14 08:55:16 2014
+Date           : Tue Jan 28 00:26:40 2014
 Host           : Linux panlong 3.2.0-37-generic #58-Ubuntu SMP Thu Jan 24 15:28:10 UTC 2013 x86_64 x86_64 x86_64 GNU/Linux
 Dir            : /home/inutard/Desktop/tmva-studies/lean_tmva
 Training events: 23465
@@ -335,49 +335,49 @@ class ReadLD : public IClassifierReader {
 
 inline void ReadLD::Initialize() 
 {
-   fLDCoefficients.push_back( 0.123599212115 );
-   fLDCoefficients.push_back( 0.431575872382 );
-   fLDCoefficients.push_back( 0.22200761892 );
-   fLDCoefficients.push_back( 0.370918120799 );
-   fLDCoefficients.push_back( 0.0907952048235 );
-   fLDCoefficients.push_back( -0.0279999618705 );
-   fLDCoefficients.push_back( -0.013020883252 );
-   fLDCoefficients.push_back( 0.0264758523047 );
-   fLDCoefficients.push_back( -0.0109867158931 );
-   fLDCoefficients.push_back( 0.109065806537 );
-   fLDCoefficients.push_back( 0.0435855178911 );
-   fLDCoefficients.push_back( 0.17493487548 );
-   fLDCoefficients.push_back( 0.115657169759 );
-   fLDCoefficients.push_back( -0.019591902433 );
-   fLDCoefficients.push_back( 0.00299204086342 );
-   fLDCoefficients.push_back( -0.00214346219379 );
-   fLDCoefficients.push_back( 0.0382268513572 );
-   fLDCoefficients.push_back( -0.0692587644959 );
-   fLDCoefficients.push_back( -0.119376967962 );
-   fLDCoefficients.push_back( 0.0776397004646 );
-   fLDCoefficients.push_back( 0.0265352502934 );
-   fLDCoefficients.push_back( 0.346671468074 );
-   fLDCoefficients.push_back( -0.530762589176 );
-   fLDCoefficients.push_back( -0.304666771191 );
-   fLDCoefficients.push_back( 0.0782062688752 );
-   fLDCoefficients.push_back( -0.0629282037227 );
-   fLDCoefficients.push_back( -0.266601900434 );
-   fLDCoefficients.push_back( 2.60297858739 );
-   fLDCoefficients.push_back( 2.5832367258 );
-   fLDCoefficients.push_back( -2.45873612904 );
-   fLDCoefficients.push_back( -2.56508738863 );
-   fLDCoefficients.push_back( 0.113470788799 );
-   fLDCoefficients.push_back( -1.04910625504 );
-   fLDCoefficients.push_back( -0.843422987179 );
-   fLDCoefficients.push_back( 0.813475542176 );
-   fLDCoefficients.push_back( 0.953956227328 );
-   fLDCoefficients.push_back( 0.113342798938 );
-   fLDCoefficients.push_back( 0.00982471158227 );
-   fLDCoefficients.push_back( -0.000527859060284 );
-   fLDCoefficients.push_back( 0.0663682732109 );
-   fLDCoefficients.push_back( 0.0738289103654 );
-   fLDCoefficients.push_back( -0.449845982528 );
-   fLDCoefficients.push_back( 0.0766320143504 );
+   fLDCoefficients.push_back( 0.0816488961209 );
+   fLDCoefficients.push_back( 0.324428983128 );
+   fLDCoefficients.push_back( 0.308528523354 );
+   fLDCoefficients.push_back( 0.363303820075 );
+   fLDCoefficients.push_back( -0.0577508917491 );
+   fLDCoefficients.push_back( -0.000163558689942 );
+   fLDCoefficients.push_back( -0.012108655932 );
+   fLDCoefficients.push_back( -0.163255896832 );
+   fLDCoefficients.push_back( -0.0063159876248 );
+   fLDCoefficients.push_back( 0.0662486523127 );
+   fLDCoefficients.push_back( -0.06243022776 );
+   fLDCoefficients.push_back( 0.0787893974581 );
+   fLDCoefficients.push_back( 0.0875968248615 );
+   fLDCoefficients.push_back( -0.0128626285433 );
+   fLDCoefficients.push_back( 0.01074253602 );
+   fLDCoefficients.push_back( 0.00139958726406 );
+   fLDCoefficients.push_back( 0.0627412284079 );
+   fLDCoefficients.push_back( -0.0300864346682 );
+   fLDCoefficients.push_back( 0.0856456394065 );
+   fLDCoefficients.push_back( 0.0223531077595 );
+   fLDCoefficients.push_back( 0.0182966983573 );
+   fLDCoefficients.push_back( 0.553850297788 );
+   fLDCoefficients.push_back( -0.517896971467 );
+   fLDCoefficients.push_back( -0.483403097879 );
+   fLDCoefficients.push_back( 0.164982670851 );
+   fLDCoefficients.push_back( -0.0743573176626 );
+   fLDCoefficients.push_back( -0.255241152712 );
+   fLDCoefficients.push_back( 0.469792194933 );
+   fLDCoefficients.push_back( 0.398638760774 );
+   fLDCoefficients.push_back( -0.332398909505 );
+   fLDCoefficients.push_back( -0.389498272382 );
+   fLDCoefficients.push_back( 0.217417206171 );
+   fLDCoefficients.push_back( -1.72198237931 );
+   fLDCoefficients.push_back( -1.3721577821 );
+   fLDCoefficients.push_back( 1.3748537878 );
+   fLDCoefficients.push_back( 1.60410652711 );
+   fLDCoefficients.push_back( 0.129214316097 );
+   fLDCoefficients.push_back( 0.0212215420285 );
+   fLDCoefficients.push_back( 0.0168152447345 );
+   fLDCoefficients.push_back( 0.0800480942587 );
+   fLDCoefficients.push_back( 0.0561217183586 );
+   fLDCoefficients.push_back( -0.245662335323 );
+   fLDCoefficients.push_back( 0.00626550743254 );
 
    // sanity check
    if (fLDCoefficients.size() != fNvars+1) {

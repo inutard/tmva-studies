@@ -10,7 +10,7 @@ Method         : Fisher::Fisher
 TMVA Release   : 4.1.4         [262404]
 ROOT Release   : 5.34/09       [336393]
 Creator        : inutard
-Date           : Tue Jan 14 00:27:05 2014
+Date           : Tue Jan 28 00:29:30 2014
 Host           : Linux panlong 3.2.0-37-generic #58-Ubuntu SMP Thu Jan 24 15:28:10 UTC 2013 x86_64 x86_64 x86_64 GNU/Linux
 Dir            : /home/inutard/Desktop/tmva-studies/lean_tmva
 Training events: 23465
@@ -337,49 +337,49 @@ class ReadFisher : public IClassifierReader {
 
 inline void ReadFisher::Initialize() 
 {
-   fFisher0 = 1814.78765726;
-   fFisherCoefficients.push_back( 1.48318717908 );
-   fFisherCoefficients.push_back( 0.76825493222 );
-   fFisherCoefficients.push_back( 1.27878708463 );
-   fFisherCoefficients.push_back( 0.312018346456 );
-   fFisherCoefficients.push_back( -0.0953436023628 );
-   fFisherCoefficients.push_back( -0.045195527893 );
-   fFisherCoefficients.push_back( 0.0906445795938 );
-   fFisherCoefficients.push_back( -0.0375226425349 );
-   fFisherCoefficients.push_back( 0.375768781232 );
-   fFisherCoefficients.push_back( 0.150303973326 );
-   fFisherCoefficients.push_back( 0.603293474894 );
-   fFisherCoefficients.push_back( 0.400046396377 );
-   fFisherCoefficients.push_back( -0.0674902061199 );
-   fFisherCoefficients.push_back( 0.010217117026 );
-   fFisherCoefficients.push_back( -0.00736885462191 );
-   fFisherCoefficients.push_back( 0.131510369054 );
-   fFisherCoefficients.push_back( -0.238287491374 );
-   fFisherCoefficients.push_back( -0.408945258566 );
-   fFisherCoefficients.push_back( 0.265681470704 );
-   fFisherCoefficients.push_back( 0.091443779261 );
-   fFisherCoefficients.push_back( 1.19378458726 );
-   fFisherCoefficients.push_back( -1.82902194167 );
-   fFisherCoefficients.push_back( -1.05507454549 );
-   fFisherCoefficients.push_back( 0.268496229531 );
-   fFisherCoefficients.push_back( -0.215781619988 );
-   fFisherCoefficients.push_back( -0.918083717833 );
-   fFisherCoefficients.push_back( 61307.1512963 );
-   fFisherCoefficients.push_back( 61850.3472022 );
-   fFisherCoefficients.push_back( -59538.7231103 );
-   fFisherCoefficients.push_back( -61839.5728384 );
-   fFisherCoefficients.push_back( 0.391099301529 );
-   fFisherCoefficients.push_back( -140861.670351 );
-   fFisherCoefficients.push_back( -119346.364582 );
-   fFisherCoefficients.push_back( 119363.434016 );
-   fFisherCoefficients.push_back( 140787.878329 );
-   fFisherCoefficients.push_back( 0.390076752956 );
-   fFisherCoefficients.push_back( 0.0334918017896 );
-   fFisherCoefficients.push_back( -0.00191986112692 );
-   fFisherCoefficients.push_back( 0.229003707959 );
-   fFisherCoefficients.push_back( 0.25439333685 );
-   fFisherCoefficients.push_back( -1.54646314662 );
-   fFisherCoefficients.push_back( 0.262622190491 );
+   fFisher0 = 2059.2465914;
+   fFisherCoefficients.push_back( 1.11367661156 );
+   fFisherCoefficients.push_back( 1.06106989293 );
+   fFisherCoefficients.push_back( 1.24717428092 );
+   fFisherCoefficients.push_back( -0.196118308979 );
+   fFisherCoefficients.push_back( -0.00026665776756 );
+   fFisherCoefficients.push_back( -0.0415741098348 );
+   fFisherCoefficients.push_back( -0.558352129239 );
+   fFisherCoefficients.push_back( -0.0217292898954 );
+   fFisherCoefficients.push_back( 0.227642575769 );
+   fFisherCoefficients.push_back( -0.21462896771 );
+   fFisherCoefficients.push_back( 0.270948694499 );
+   fFisherCoefficients.push_back( 0.299449644067 );
+   fFisherCoefficients.push_back( -0.0438252238647 );
+   fFisherCoefficients.push_back( 0.0369191089117 );
+   fFisherCoefficients.push_back( 0.00490721986723 );
+   fFisherCoefficients.push_back( 0.215578403613 );
+   fFisherCoefficients.push_back( -0.103360311026 );
+   fFisherCoefficients.push_back( 0.292581477039 );
+   fFisherCoefficients.push_back( 0.0765001090646 );
+   fFisherCoefficients.push_back( 0.0628580449261 );
+   fFisherCoefficients.push_back( 1.90236439163 );
+   fFisherCoefficients.push_back( -1.77668661013 );
+   fFisherCoefficients.push_back( -1.66279631752 );
+   fFisherCoefficients.push_back( 0.565578381989 );
+   fFisherCoefficients.push_back( -0.255394423742 );
+   fFisherCoefficients.push_back( -0.876431333726 );
+   fFisherCoefficients.push_back( 71974.1391207 );
+   fFisherCoefficients.push_back( 72611.7572875 );
+   fFisherCoefficients.push_back( -69897.8658976 );
+   fFisherCoefficients.push_back( -72599.1508249 );
+   fFisherCoefficients.push_back( 0.746708604993 );
+   fFisherCoefficients.push_back( 12482.3692931 );
+   fFisherCoefficients.push_back( 10576.1193699 );
+   fFisherCoefficients.push_back( -10577.6293238 );
+   fFisherCoefficients.push_back( -12476.2618053 );
+   fFisherCoefficients.push_back( 0.4441379806 );
+   fFisherCoefficients.push_back( 0.0725947418516 );
+   fFisherCoefficients.push_back( 0.0578670371306 );
+   fFisherCoefficients.push_back( 0.275156768337 );
+   fFisherCoefficients.push_back( 0.19301229405 );
+   fFisherCoefficients.push_back( -0.843191981566 );
+   fFisherCoefficients.push_back( 0.0209497444239 );
 
    // sanity check
    if (fFisherCoefficients.size() != fNvars) {

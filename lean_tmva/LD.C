@@ -51,13 +51,13 @@
 
 using namespace TMVA;
 
-void Fisher() {
+void PCA() {
 	//---------------------------------------------------------------
 	// This loads the library
 	Tools::Instance();
 
-	std::cout << std::endl;
-	std::cout << "==> Start TMVAClassification" << std::endl;
+	std::cerr << std::endl;
+	std::cerr << "==> Start TMVAClassification" << std::endl;
 
 	// --------------------------------------------------------------------------------------------------
 
@@ -118,10 +118,10 @@ void Fisher() {
     for (int i = 0; i < variables.size(); i++) {
         const std::vector<TString>& tup = variables[i];
         if (tup[1] == "analysis_channel") continue;
-        cout << "Adding variable: " << tup[1] << endl;
+        cerr << "Adding variable: " << tup[1] << endl;
         factory->AddVariable(tup[0], tup[1], tup[2], tup[3][0]);
     }
-	std::cout << "================================================" << std::endl;
+	std::cerr << "================================================" << std::endl;
 
     // global event weights per tree (see below for setting event-wise weights)
     Double_t signalWeight     = 1.0;
@@ -142,8 +142,8 @@ void Fisher() {
     factory->AddBackgroundTree( diboson_mu, backgroundWeight );
 
     // Set individual event weights (the variables must exist in the original TTree)
-    factory->SetSignalWeightExpression    ("weight_70");
-    factory->SetBackgroundWeightExpression("weight_70");
+    factory->SetSignalWeightExpression    ("weight_1btin_70*weight_70/btweight_70");
+    factory->SetBackgroundWeightExpression("weight_1btin_70*weight_70/btweight_70");
 
     // Apply additional cuts on the signal and background samples (can be different)
     TCut mycuts = "weight_70>0 && analysis_channel==1"; // for example: TCut mycuts = "abs(var1)<0.5 && abs(var2-0.5)<1";
@@ -161,12 +161,19 @@ void Fisher() {
 	        "nTrain_Signal=0:nTrain_Background=0:SplitMode=Random:NormMode=NumEvents:!V" );
 
 
-    factory->BookMethod( TMVA::Types::kFisher, "Fisher", "H:!V:Fisher:VarTransform=N:CreateMVAPdfs:PDFInterpolMVAPdf=Spline2:NbinsMVAPdf=50:NsmoothMVAPdf=10" );
+    factory->BookMethod( TMVA::Types::kLD, "LD", "H:!V:VarTransform=N:CreateMVAPdfs:PDFInterpolMVAPdf=Spline2:NbinsMVAPdf=50:NsmoothMVAPdf=10" );
     
     // ---- Book MVA methods
     //
     // Please lookup the various method configuration options in the corresponding cxx files, eg:
     // src/MethoCuts.cxx, etc, or here: http://tmva.sourceforge.net/optionRef.html
+
+
+    // TMVA ANN: MLP (recommended ANN) -- all ANNs in TMVA are Multilayer Perceptrons
+    //factory->BookMethod( Types::kMLP, "MLP", "!H:!V:NeuronType=tanh:VarTransform=N:NCycles=600:HiddenLayers=N+5:TestRate=5:!UseRegulator" );
+
+    // Boosted decision trees
+    //factory->BookMethod( Types::kBDT, "BDTG","!H:!V:NTrees=2000::BoostType=Grad:Shrinkage=0.1:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=3:MaxDepth=4" );
 		        
     // ---- Now you can tell the factory to train, test, and evaluate the MVAs
 
@@ -181,13 +188,18 @@ void Fisher() {
 
     // --------------------------------------------------------------
     
+    //TMVA::IMethod* myLD = reader->FindMVA( "LD" ); 
+    //const TMVA::Event* ev = myLD->GetEvent();
+    
+    
     // Save the output
     outputFile->Close();
 
-    std::cout << "==> Wrote root file: " << outputFile->GetName() << std::endl;
-    std::cout << "==> TMVAClassification is done!" << std::endl;
+    std::cerr << "==> Wrote root file: " << outputFile->GetName() << std::endl;
+    std::cerr << "==> TMVAClassification is done!" << std::endl;
 
 	// Launch the GUI for the root macros
-	if (!gROOT->IsBatch()) TMVAGui( outfileName );
+	//if (!gROOT->IsBatch()) TMVAGui( outfileName );
+	gApplication->Terminate(0);
 }
 

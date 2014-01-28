@@ -90,8 +90,8 @@ void TMVAClassification()
 	Use["BDTG"]            = 0;
 	// ---------------------------------------------------------------
 
-	std::cout << std::endl;
-	std::cout << "==> Start TMVAClassification" << std::endl;
+	std::cerr << std::endl;
+	std::cerr << "==> Start TMVAClassification" << std::endl;
 
 	// --------------------------------------------------------------------------------------------------
 
@@ -154,8 +154,8 @@ void TMVAClassification()
 	        Factory *factory = new Factory( "TMVAClassification", outputFile,
 			        "!V:Silent:Color:DrawProgressBar:AnalysisType=Classification" );
 			        
-			std::cout << std::endl;
-			std::cout << "================================================" << std::endl;
+			std::cerr << std::endl;
+			std::cerr << "================================================" << std::endl;
 			//add a random num_used sized subset of variables to train on.
             long long variable_choice = random_ksubset(variables.size(), num_used);
             
@@ -166,10 +166,10 @@ void TMVAClassification()
                 if (chosen) {
                     const std::vector<TString>& tup = variables[i];
                     factory->AddVariable(tup[0], tup[1], tup[2], tup[3][0]);
-					std::cout << "Adding variable: " << tup[1] << std::endl;
+					std::cerr << "Adding variable: " << tup[1] << std::endl;
                 }
             }
-			std::cout << "================================================" << std::endl;
+			std::cerr << "================================================" << std::endl;
 
             // global event weights per tree (see below for setting event-wise weights)
             Double_t signalWeight     = 1.0;
@@ -190,8 +190,8 @@ void TMVAClassification()
             factory->AddBackgroundTree( diboson_mu, backgroundWeight );
 
 	        // Set individual event weights (the variables must exist in the original TTree)
-            factory->SetSignalWeightExpression    ("weight_70");
-            factory->SetBackgroundWeightExpression("weight_70");
+            factory->SetSignalWeightExpression    ("weight_1btin_70*weight_70/btweight_70");
+            factory->SetBackgroundWeightExpression("weight_1btin_70*weight_70/btweight_70");
 
 	        // Apply additional cuts on the signal and background samples (can be different)
 	        TCut mycuts = "weight_70>0 && analysis_channel==1"; // for example: TCut mycuts = "abs(var1)<0.5 && abs(var2-0.5)<1";
@@ -239,8 +239,8 @@ void TMVAClassification()
 	        // Save the output
 	        outputFile->Close();
 
-	        std::cout << "==> Wrote root file: " << outputFile->GetName() << std::endl;
-	        std::cout << "==> TMVAClassification is done!" << std::endl;
+	        std::cerr << "==> Wrote root file: " << outputFile->GetName() << std::endl;
+	        std::cerr << "==> TMVAClassification is done!" << std::endl;
 
             //get efficiency of methods, compare with current bests
 	        IMethod* i_met;
@@ -248,14 +248,14 @@ void TMVAClassification()
 	        if (Use["MLP"]) {
 		        i_met = factory->GetMethod("MLP");
 		        method = dyncast(i_met);
-		        std::cout << "MLP Significance: " << method->GetSignificance() <<  std::endl;
+		        std::cerr << "MLP Significance: " << method->GetSignificance() <<  std::endl;
 		        rankings.insert(make_method_stats(variable_choice, method->GetSignificance(), "MLP"));
 	        }
 
 	        if (Use["BDTG"]) {
 		        i_met = factory->GetMethod("BDTG");
 		        method = dyncast(i_met);
-		        std::cout << "BDTG Significance: " << method->GetSignificance() <<  std::endl;
+		        std::cerr << "BDTG Significance: " << method->GetSignificance() <<  std::endl;
 		        rankings.insert(make_method_stats(variable_choice, method->GetSignificance(), "BDTG"));
 	        }
 
@@ -279,5 +279,6 @@ void TMVAClassification()
 
 	// Launch the GUI for the root macros
 	//if (!gROOT->IsBatch()) TMVAGui( outfileName );
+	gApplication->Terminate(0);
 }
 

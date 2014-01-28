@@ -4,11 +4,11 @@
     <Info name="TMVA Release" value="4.1.4 [262404]"/>
     <Info name="ROOT Release" value="5.34/09 [336393]"/>
     <Info name="Creator" value="inutard"/>
-    <Info name="Date" value="Tue Jan 14 08:55:16 2014"/>
+    <Info name="Date" value="Tue Jan 28 00:26:40 2014"/>
     <Info name="Host" value="Linux panlong 3.2.0-37-generic #58-Ubuntu SMP Thu Jan 24 15:28:10 UTC 2013 x86_64 x86_64 x86_64 GNU/Linux"/>
     <Info name="Dir" value="/home/inutard/Desktop/tmva-studies/lean_tmva"/>
     <Info name="Training events" value="23465"/>
-    <Info name="TrainingTime" value="5.68709135e-01"/>
+    <Info name="TrainingTime" value="6.11998081e-01"/>
     <Info name="AnalysisType" value="Classification"/>
   </GeneralInfo>
   <Options>
@@ -302,59 +302,59 @@
   </Transformations>
   <MVAPdfs>
     <PDF Name="LD_PDFSig" MinNSmooth="10" MaxNSmooth="10" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
-      <Histogram Name="LD_tr_S_original" NBins="50" XMin="-8.3041346073150635e-01" XMax="7.2681027650833130e-01" HasEquidistantBins="1">
-        2.44789310e-03 0.00000000e+00 4.23903588e-03 0.00000000e+00 6.44280452e-03 8.21693227e-03 6.71878105e-03 1.43514556e-02 3.08869096e-02 3.93830065e-02 6.21784657e-02 1.07442468e-01 1.27329163e-01 2.31890742e-01 3.46743587e-01 4.94906951e-01 6.44028799e-01 8.73024892e-01 1.14089533e+00 1.64388030e+00 2.01811259e+00 2.42537031e+00 2.78777895e+00 3.30993389e+00 3.54598745e+00 3.33040750e+00 2.97570041e+00 2.27269393e+00 1.54206805e+00 9.04144128e-01 5.75326486e-01 3.24542679e-01 1.53068919e-01 8.11843613e-02 3.58221376e-02 1.77052526e-02 1.21189887e-02 6.49686226e-03 2.86511579e-03 8.76498693e-04 1.21195398e-03 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 
+      <Histogram Name="LD_tr_S_original" NBins="50" XMin="-8.3801072835922241e-01" XMax="7.1727514266967773e-01" HasEquidistantBins="1">
+        1.70860027e-03 0.00000000e+00 1.42409078e-03 1.48500750e-03 1.23720522e-03 5.86295200e-03 6.31893129e-03 4.08052255e-03 1.26521290e-02 2.78174099e-02 3.50767900e-02 8.23168363e-02 1.02067264e-01 1.45678234e-01 2.13434344e-01 3.22917193e-01 3.97756080e-01 4.62292464e-01 6.80765242e-01 8.65667439e-01 1.14491381e+00 1.48082789e+00 1.96273418e+00 2.60807051e+00 3.01493025e+00 3.58426449e+00 3.86879999e+00 3.42203173e+00 2.81669062e+00 1.87436793e+00 1.26677425e+00 7.71372053e-01 4.63200119e-01 2.36072335e-01 1.32866069e-01 6.56771240e-02 3.88003400e-02 1.18630920e-02 8.58046615e-03 1.68912958e-03 7.03763943e-04 1.05049386e-03 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 1.59130248e-03 0.00000000e+00 0.00000000e+00 0.00000000e+00 
       </Histogram>
     </PDF>
     <PDF Name="LD_PDFBkg" MinNSmooth="10" MaxNSmooth="10" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
-      <Histogram Name="LD_tr_B_original" NBins="50" XMin="-8.3041346073150635e-01" XMax="7.2681027650833130e-01" HasEquidistantBins="1">
-        1.59951530e-01 2.47830938e-01 7.64126276e-02 6.43059458e-02 5.51875282e-01 2.32834361e-01 5.61056648e-01 1.24793906e+00 1.49493481e+00 1.32187907e+00 1.82023971e+00 2.61358893e+00 3.38757843e+00 2.45870198e+00 3.09718989e+00 2.40632567e+00 2.31279487e+00 1.80862285e+00 1.65599415e+00 1.21301987e+00 1.04088088e+00 9.88967146e-01 4.68272189e-01 1.87785234e-01 1.84116242e-01 2.41271774e-01 2.92824624e-02 2.37869603e-02 1.10834186e-01 3.29411601e-02 0.00000000e+00 0.00000000e+00 6.72091285e-02 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 
+      <Histogram Name="LD_tr_B_original" NBins="50" XMin="-8.3801072835922241e-01" XMax="7.1727514266967773e-01" HasEquidistantBins="1">
+        1.10877320e-01 2.27862102e-02 7.59007651e-02 1.74275925e-01 3.46511685e-01 4.31669049e-01 6.34674376e-01 7.85418415e-01 1.19086165e+00 1.90318531e+00 2.11253374e+00 2.34039838e+00 2.25693577e+00 2.58214830e+00 2.41184020e+00 2.45412749e+00 1.70595861e+00 1.80718497e+00 1.86977965e+00 1.24859514e+00 1.07042940e+00 1.05145382e+00 1.07415476e+00 1.09526314e+00 3.93036582e-01 1.94669285e-01 2.04877425e-01 2.74535681e-01 4.11408851e-03 6.57026162e-02 0.00000000e+00 1.67927494e-01 6.97228197e-02 0.00000000e+00 0.00000000e+00 7.97150983e-03 0.00000000e+00 0.00000000e+00 8.90911260e-03 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 
       </Histogram>
     </PDF>
   </MVAPdfs>
   <Weights NOut="1" NCoeff="43">
-    <Coefficient IndexOut="0" IndexCoeff="0" Value="1.2359921211512705e-01"/>
-    <Coefficient IndexOut="0" IndexCoeff="1" Value="4.3157587238210127e-01"/>
-    <Coefficient IndexOut="0" IndexCoeff="2" Value="2.2200761892045762e-01"/>
-    <Coefficient IndexOut="0" IndexCoeff="3" Value="3.7091812079888253e-01"/>
-    <Coefficient IndexOut="0" IndexCoeff="4" Value="9.0795204823521547e-02"/>
-    <Coefficient IndexOut="0" IndexCoeff="5" Value="-2.7999961870524115e-02"/>
-    <Coefficient IndexOut="0" IndexCoeff="6" Value="-1.3020883252045340e-02"/>
-    <Coefficient IndexOut="0" IndexCoeff="7" Value="2.6475852304693737e-02"/>
-    <Coefficient IndexOut="0" IndexCoeff="8" Value="-1.0986715893144230e-02"/>
-    <Coefficient IndexOut="0" IndexCoeff="9" Value="1.0906580653674869e-01"/>
-    <Coefficient IndexOut="0" IndexCoeff="10" Value="4.3585517891093772e-02"/>
-    <Coefficient IndexOut="0" IndexCoeff="11" Value="1.7493487547974773e-01"/>
-    <Coefficient IndexOut="0" IndexCoeff="12" Value="1.1565716975948881e-01"/>
-    <Coefficient IndexOut="0" IndexCoeff="13" Value="-1.9591902432992470e-02"/>
-    <Coefficient IndexOut="0" IndexCoeff="14" Value="2.9920408634204476e-03"/>
-    <Coefficient IndexOut="0" IndexCoeff="15" Value="-2.1434621937879289e-03"/>
-    <Coefficient IndexOut="0" IndexCoeff="16" Value="3.8226851357233915e-02"/>
-    <Coefficient IndexOut="0" IndexCoeff="17" Value="-6.9258764495865988e-02"/>
-    <Coefficient IndexOut="0" IndexCoeff="18" Value="-1.1937696796214192e-01"/>
-    <Coefficient IndexOut="0" IndexCoeff="19" Value="7.7639700464642525e-02"/>
-    <Coefficient IndexOut="0" IndexCoeff="20" Value="2.6535250293384133e-02"/>
-    <Coefficient IndexOut="0" IndexCoeff="21" Value="3.4667146807423599e-01"/>
-    <Coefficient IndexOut="0" IndexCoeff="22" Value="-5.3076258917647756e-01"/>
-    <Coefficient IndexOut="0" IndexCoeff="23" Value="-3.0466677119125052e-01"/>
-    <Coefficient IndexOut="0" IndexCoeff="24" Value="7.8206268875237850e-02"/>
-    <Coefficient IndexOut="0" IndexCoeff="25" Value="-6.2928203722700360e-02"/>
-    <Coefficient IndexOut="0" IndexCoeff="26" Value="-2.6660190043445908e-01"/>
-    <Coefficient IndexOut="0" IndexCoeff="27" Value="2.6029785873915863e+00"/>
-    <Coefficient IndexOut="0" IndexCoeff="28" Value="2.5832367257999707e+00"/>
-    <Coefficient IndexOut="0" IndexCoeff="29" Value="-2.4587361290373018e+00"/>
-    <Coefficient IndexOut="0" IndexCoeff="30" Value="-2.5650873886317491e+00"/>
-    <Coefficient IndexOut="0" IndexCoeff="31" Value="1.1347078879922634e-01"/>
-    <Coefficient IndexOut="0" IndexCoeff="32" Value="-1.0491062550369179e+00"/>
-    <Coefficient IndexOut="0" IndexCoeff="33" Value="-8.4342298717874087e-01"/>
-    <Coefficient IndexOut="0" IndexCoeff="34" Value="8.1347554217592233e-01"/>
-    <Coefficient IndexOut="0" IndexCoeff="35" Value="9.5395622732849006e-01"/>
-    <Coefficient IndexOut="0" IndexCoeff="36" Value="1.1334279893835336e-01"/>
-    <Coefficient IndexOut="0" IndexCoeff="37" Value="9.8247115822701625e-03"/>
-    <Coefficient IndexOut="0" IndexCoeff="38" Value="-5.2785906028418594e-04"/>
-    <Coefficient IndexOut="0" IndexCoeff="39" Value="6.6368273210924977e-02"/>
-    <Coefficient IndexOut="0" IndexCoeff="40" Value="7.3828910365433487e-02"/>
-    <Coefficient IndexOut="0" IndexCoeff="41" Value="-4.4984598252843710e-01"/>
-    <Coefficient IndexOut="0" IndexCoeff="42" Value="7.6632014350380473e-02"/>
+    <Coefficient IndexOut="0" IndexCoeff="0" Value="8.1648896120906200e-02"/>
+    <Coefficient IndexOut="0" IndexCoeff="1" Value="3.2442898312803692e-01"/>
+    <Coefficient IndexOut="0" IndexCoeff="2" Value="3.0852852335431180e-01"/>
+    <Coefficient IndexOut="0" IndexCoeff="3" Value="3.6330382007535711e-01"/>
+    <Coefficient IndexOut="0" IndexCoeff="4" Value="-5.7750891749083322e-02"/>
+    <Coefficient IndexOut="0" IndexCoeff="5" Value="-1.6355868994155642e-04"/>
+    <Coefficient IndexOut="0" IndexCoeff="6" Value="-1.2108655931974549e-02"/>
+    <Coefficient IndexOut="0" IndexCoeff="7" Value="-1.6325589683207520e-01"/>
+    <Coefficient IndexOut="0" IndexCoeff="8" Value="-6.3159876248036068e-03"/>
+    <Coefficient IndexOut="0" IndexCoeff="9" Value="6.6248652312726808e-02"/>
+    <Coefficient IndexOut="0" IndexCoeff="10" Value="-6.2430227760041368e-02"/>
+    <Coefficient IndexOut="0" IndexCoeff="11" Value="7.8789397458145949e-02"/>
+    <Coefficient IndexOut="0" IndexCoeff="12" Value="8.7596824861466249e-02"/>
+    <Coefficient IndexOut="0" IndexCoeff="13" Value="-1.2862628543260257e-02"/>
+    <Coefficient IndexOut="0" IndexCoeff="14" Value="1.0742536020006049e-02"/>
+    <Coefficient IndexOut="0" IndexCoeff="15" Value="1.3995872640649304e-03"/>
+    <Coefficient IndexOut="0" IndexCoeff="16" Value="6.2741228407866556e-02"/>
+    <Coefficient IndexOut="0" IndexCoeff="17" Value="-3.0086434668218587e-02"/>
+    <Coefficient IndexOut="0" IndexCoeff="18" Value="8.5645639406481067e-02"/>
+    <Coefficient IndexOut="0" IndexCoeff="19" Value="2.2353107759515822e-02"/>
+    <Coefficient IndexOut="0" IndexCoeff="20" Value="1.8296698357271990e-02"/>
+    <Coefficient IndexOut="0" IndexCoeff="21" Value="5.5385029778784300e-01"/>
+    <Coefficient IndexOut="0" IndexCoeff="22" Value="-5.1789697146654134e-01"/>
+    <Coefficient IndexOut="0" IndexCoeff="23" Value="-4.8340309787926827e-01"/>
+    <Coefficient IndexOut="0" IndexCoeff="24" Value="1.6498267085126317e-01"/>
+    <Coefficient IndexOut="0" IndexCoeff="25" Value="-7.4357317662569145e-02"/>
+    <Coefficient IndexOut="0" IndexCoeff="26" Value="-2.5524115271154602e-01"/>
+    <Coefficient IndexOut="0" IndexCoeff="27" Value="4.6979219493250923e-01"/>
+    <Coefficient IndexOut="0" IndexCoeff="28" Value="3.9863876077395233e-01"/>
+    <Coefficient IndexOut="0" IndexCoeff="29" Value="-3.3239890950466489e-01"/>
+    <Coefficient IndexOut="0" IndexCoeff="30" Value="-3.8949827238247181e-01"/>
+    <Coefficient IndexOut="0" IndexCoeff="31" Value="2.1741720617125981e-01"/>
+    <Coefficient IndexOut="0" IndexCoeff="32" Value="-1.7219823793050608e+00"/>
+    <Coefficient IndexOut="0" IndexCoeff="33" Value="-1.3721577821025326e+00"/>
+    <Coefficient IndexOut="0" IndexCoeff="34" Value="1.3748537877976936e+00"/>
+    <Coefficient IndexOut="0" IndexCoeff="35" Value="1.6041065271127088e+00"/>
+    <Coefficient IndexOut="0" IndexCoeff="36" Value="1.2921431609685963e-01"/>
+    <Coefficient IndexOut="0" IndexCoeff="37" Value="2.1221542028519114e-02"/>
+    <Coefficient IndexOut="0" IndexCoeff="38" Value="1.6815244734487145e-02"/>
+    <Coefficient IndexOut="0" IndexCoeff="39" Value="8.0048094258667213e-02"/>
+    <Coefficient IndexOut="0" IndexCoeff="40" Value="5.6121718358601136e-02"/>
+    <Coefficient IndexOut="0" IndexCoeff="41" Value="-2.4566233532314996e-01"/>
+    <Coefficient IndexOut="0" IndexCoeff="42" Value="6.2655074325448368e-03"/>
   </Weights>
 </MethodSetup>
