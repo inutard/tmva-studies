@@ -71,7 +71,7 @@ method_stats make_method_stats(long long v, double r, std::string method) {
     return std::make_pair(r, make_pair(v, method));
 }
 
-void TMVAClassification()
+void TMVAClassification(int MVA_type)
 {
     srand(time(NULL));
 	//---------------------------------------------------------------
@@ -84,12 +84,12 @@ void TMVAClassification()
 
 	//
 	// --- Neural Networks (all are feed-forward Multilayer Perceptrons)
-	Use["MLP"]             = 1; // Recommended ANN
+	Use["MLP"]             = bool(1&MVA_type); // Recommended ANN
 	// 
 	// --- Boosted Decision Trees
-	Use["BDTG"]            = 0;
+	Use["BDTG"]            = bool(2&MVA_type);
 	// ---------------------------------------------------------------
-
+    
 	std::cerr << std::endl;
 	std::cerr << "==> Start TMVAClassification" << std::endl;
 
@@ -219,9 +219,11 @@ void TMVAClassification()
 		        factory->BookMethod( Types::kMLP, "MLP", "!H:!V:NeuronType=tanh:VarTransform=N:NCycles=600:HiddenLayers=N+5:TestRate=5:!UseRegulator" );
 
 	        // Boosted decision trees
+	        // In later versions of TMVA, use UsedBaggedBoost and BaggedSampleFraction
+	        // Instead of UsedBaggedGrad and GradBaggingFraction
 	        if (Use["BDTG"])
 		        factory->BookMethod( Types::kBDT, "BDTG",
-				        "!H:!V:NTrees=2000::BoostType=Grad:Shrinkage=0.1:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=3:MaxDepth=4" );
+				        "!H:!V:NTrees=2000::BoostType=Grad:Shrinkage=0.1:UseBaggedGrad:GradBaggingFraction=0.5:nCuts=20:MaxDepth=3:MaxDepth=4" );
 				        
 	        // ---- Now you can tell the factory to train, test, and evaluate the MVAs
 
