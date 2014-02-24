@@ -96,7 +96,7 @@ void TMVAClassification(int MVA_type)
 	// --------------------------------------------------------------------------------------------------
 
     // Read training and test data  
-    TString data_path = "~/Desktop/";//"/mnt/xrootdb/alister/MVA_studies/samples/"; 
+    TString data_path = "/mnt/xrootdb/alister/MVA_studies/samples/"; 
     TFile *input_sig_el = TFile::Open(data_path + "nominal_el/tprime_650_1M.root");
     TFile *input_sig_mu = TFile::Open(data_path + "nominal_mu/tprime_650_1M.root");
     TFile *input_ttbar_el = TFile::Open(data_path + "nominal_el/ttbar.root");
@@ -134,7 +134,7 @@ void TMVAClassification(int MVA_type)
     
     std::set<method_stats> rankings;
     const int max_trials = 5;
-    for (int num_used = 2; num_used <= min(variables.size(),8); num_used++) {
+    for (int num_used = 2; num_used <= min(variables.size(),13); num_used++) {
         for (int trial = 0; trial < max_trials; trial++) {
             
 	        // Create a ROOT output file where TMVA will store ntuples, histograms, etc.
