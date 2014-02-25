@@ -37,6 +37,7 @@
 #include <set>
 #include <algorithm>
 #include <ctime>
+#include <cmath>
 
 #include "TChain.h"
 #include "TFile.h"
@@ -76,13 +77,11 @@ method_stats make_method_stats(long long v, double r, std::string method) {
 	return std::make_pair(r, make_pair(v, method));
 }
 
-void TMVAClassification(int MVA_type)
-{
+void TMVAClassification(int MVA_type) {
 	srand(time(NULL));
 	//---------------------------------------------------------------
 	// This loads the library
 	Tools::Instance();
-	gROOT->LoadMacro("mydyncast.C+");
 
 	// Default MVA methods to be trained + tested
 	std::map<std::string,int> Use;
@@ -249,182 +248,155 @@ void TMVAClassification(int MVA_type)
 			std::cerr << "==> Wrote root file: " << outputFile->GetName() << std::endl;
 			std::cerr << "==> TMVAClassification is done!" << std::endl;
 
-			//get efficiency of methods, compare with current bests
-			IMethod* i_met;
-			MethodBase* method;
-			if (Use["MLP"]) {
-				i_met = factory->GetMethod("MLP");
-				method = dyncast(i_met);
-				std::cerr << "MLP Significance: " << method->GetSignificance() <<  std::endl;
-				rankings.insert(make_method_stats(variable_choice, method->GetSignificance(), "MLP"));
-			}
-
-			if (Use["BDTG"]) {
-				i_met = factory->GetMethod("BDTG");
-				method = dyncast(i_met);
-				std::cerr << "BDTG Significance: " << method->GetSignificance() <<  std::endl;
-				rankings.insert(make_method_stats(variable_choice, method->GetSignificance(), "BDTG"));
-			}
-
 			delete factory;
 
 			//=================================== Begin Application =====================================//
 
 			// Create the Reader Object
 
-			Float_t      Ht;
-			Float_t      b_lep_pt;
-			Float_t      b_had_pt;
-			Float_t      dR_lnu;
-			Float_t      dR_Whad_blep;
-			Float_t      dR_Whad_bhad;
-			Float_t      dR_lb_lep;
-			Float_t      dR_lb_had;
-
-			reader->AddVariable( "Ht", &Ht );
-			reader->AddVariable( "b_had_pt", &b_had_pt );
-			reader->AddVariable( "dR_lb_lep", &dR_lb_lep );
-			reader->AddVariable( "b_lep_pt", &b_lep_pt );
-			reader->AddVariable( "dR_Whad_bhad", &dR_Whad_bhad );
-			reader->AddVariable( "dR_lnu", &dR_lnu );
-			reader->AddVariable( "dR_Whad_blep", &dR_Whad_blep );
-			reader->AddVariable( "dR_lb_had", &dR_lb_had );
-
-			// Spectator variables declared in the training have to be added to the reader, too
-			Float_t mc_weight;
-			Float_t m_reco;
-			Int_t runNumber, eventNumber, analysis_channel;
-			reader->AddSpectator( "mc_weight := weight_1btin_70*weight_70/btweight_70", &mc_weight ); // SN hard code
-			reader->AddSpectator( "m_reco", &m_reco);
-			reader->AddSpectator( "runNumber", &runNumber);
-			reader->AddSpectator( "eventNumber", &eventNumber);
-
-			// --- Book the MVA methods
-			TString methodName = TString("MLP") + TString(" method");
-			reader->BookMVA( methodName, weight_file );
-
-
-			// Prepare input tree (this must be replaced by your data source)
-			// in this example, there is a toy tree with signal and one with background events
-			// we'll later on use only the "signal" events for the test in this example.
-			//
-
-			std::cout << "--- Select signal sample" << std::endl;
-			TTree* theTree = (TTree*)input->Get("mini");
-
 			Float_t weight_70, btweight_70, weight_1btin_70;
-			theTree->SetBranchAddress( "Ht", &Ht );
-			theTree->SetBranchAddress( "b_lep_pt", &b_lep_pt );
-			theTree->SetBranchAddress( "b_had_pt", &b_had_pt );
-			theTree->SetBranchAddress( "dR_lnu", &dR_lnu );
-			theTree->SetBranchAddress( "dR_Whad_blep", &dR_Whad_blep );
-			theTree->SetBranchAddress( "dR_Whad_bhad", &dR_Whad_bhad );
-			theTree->SetBranchAddress( "dR_lb_lep", &dR_lb_lep );
-			theTree->SetBranchAddress( "dR_lb_had", &dR_lb_had );
-			theTree->SetBranchAddress( "analysis_channel", &analysis_channel);
-			theTree->SetBranchAddress( "weight_70", &weight_70);
-			theTree->SetBranchAddress( "btweight_70", &btweight_70);
-			theTree->SetBranchAddress( "weight_1btin_70", &weight_1btin_70);
-			// Efficiency calculator for cut method
-			//Int_t    nSelCutsGA = 0;
-			//Double_t effS       = 0.7;
+			Int_t analysis_channel;
 
-			std::vector<Float_t> vecVar(5); // vector for EvaluateMVA tests
+			TTree* background[10] = {ttbar_el, ttbar_mu, wjets_el, wjets_mu, zjets_el, zjets_mu, 
+				singletop_el, singletop_mu, diboson_el, diboson_mu};
 
-			std::cout << "--- Processing: " << theTree->GetEntries() << " events" << std::endl;
-			TStopwatch sw;
-			sw.Start();
+			double tot_mlp = 0, tot_bdtg = 0;
+			for (int bg = 0; bg < 10; bg++) {
+				Reader *reader = new TMVA::Reader( "!Color:!Silent" );	
 
+				vector<Float_t> var_val(num_used);
 
-			TString target_name = output_file;
-			TFile *target = 0;
-			target = TFile::Open( target_name,"RECREATE" );
-			TTree *tree = theTree->CloneTree(0);
-			tree->SetDirectory(target);
-			target->cd();
-			Float_t MVA;
-			tree->Branch("MVA", &MVA, "MVA/F");
-
-			Int_t nEvent = theTree->GetEntries();
-			if(nEvts != -1) nEvent = nEvts;
-
-			int cnt = 0;
-			double tot = 0;
-
-			UInt_t nbin = 100;
-			TH1F *histMLP(0);
-			histMLP = new TH1F( "MVA_MLP", "MVA_MLP", nbin, -1.25, 1.5 );
-			for (Long64_t ievt=0; ievt<nEvent; ievt++) {
-				if (ievt%10000 == 0) {
-					std::cout << "--- ... Processing event: " << ievt << std::endl;
-					std::cout << tot << endl;
+				int cnt = 0;
+				for (int i = 0; i < variables.size(); i++) {
+					if (variables[i][1] == "analysis_channel") continue;
+					long long chosen = variable_choice;
+					chosen &= (1LL << i);
+					if (chosen) {
+						const std::vector<TString>& tup = variables[i];
+						//std::cerr << "Adding variable: " << tup[1] << std::endl;
+						reader->AddVariable( tup[0], &var_val[cnt++] );
+					}
 				}
 
-				theTree->GetEntry(ievt);
-				if (analysis_channel == 0) continue;
+				// --- Book the MVA methods
+				if (Use["MLP"]) {
+					TString methodName = TString("MLP method");
+					reader->BookMVA( methodName, "weights/TMVAClassification_MLP.weights.xml" );
+				}
 
-				//theTree->Show(ievt);
+				if (Use["BDTG"]) {
+					TString methodName = TString("BDTG method");
+					reader->BookMVA( methodName, "weights/TMVAClassification_BDTG.weights.xml" );
+				}
 
-				// --- Return the MVA outputs and fill into histograms
-				MVA = reader->EvaluateMVA( "MLP method" );
+				// Prepare input tree (this must be replaced by your data source)
+				// in this example, there is a toy tree with signal and one with background events
+				// we'll later on use only the "signal" events for the test in this example.
+				//
 
-				if (MVA <= 0.9965) continue;
+				std::cerr << "--- Select signal sample" << std::endl;
 
-				cnt++;
-				histMLP->Fill(MVA);
+				TTree* theTree = background[bg];	
 
-				tot += weight_1btin_70*weight_70/btweight_70;//MVA; //mc_weight;
+				cnt = 0;
+				for (int i = 0; i < variables.size(); i++) {
+					if (variables[i][1] == "analysis_channel") continue;
+					long long chosen = variable_choice;
+					chosen &= (1LL << i);
+					if (chosen) {
+						const std::vector<TString>& tup = variables[i];
+						//std::cerr << "Adding variable: " << tup[1] << std::endl;
+						theTree->SetBranchAddress( tup[1], &var_val[cnt++] );
+					}
+				}
 
-				/*
-				   if (tot > 10.3) {
-				   cout << cnt << " " << tot << endl;
-				   break;
-				   }
-				 */
-				/*
-				   if (cnt >= 4737) {
-				   cout << tot << endl;    
-				   break; 
-				   }
-				 */
-				// tree->Fill();
+				theTree->SetBranchAddress( "weight_70", &weight_70);
+				theTree->SetBranchAddress( "btweight_70", &btweight_70);
+				theTree->SetBranchAddress( "weight_1btin_70", &weight_1btin_70);
+				theTree->SetBranchAddress( "analysis_channel", &analysis_channel);
+				std::cerr << "--- Processing: " << theTree->GetEntries() << " events" << std::endl;
+				TStopwatch sw;
+				sw.Start();
+
+
+
+				Int_t nEvent = theTree->GetEntries();
+
+				for (Long64_t ievt=0; ievt<nEvent; ievt++) {
+					if (ievt%10000 == 0) {
+						std::cerr << "--- ... Processing event: " << ievt << std::endl;
+					}
+
+					theTree->GetEntry(ievt);
+					if (analysis_channel == 0) continue;
+
+					//theTree->Show(ievt);
+
+					Double_t mc_weight = weight_1btin_70*weight_70/btweight_70;
+					// --- Return the MVA outputs and fill into histograms
+					if (Use["MLP"]) {
+						Double_t MVA_MLP = reader->EvaluateMVA( "MLP method" );
+						if (MVA_MLP >= 0.9965) {
+							//std::cerr << "got one! " << mc_weight << std::endl; 
+							tot_mlp += mc_weight;
+						}
+					}
+
+					if (Use["BDTG"]) {
+						Double_t MVA_BDTG = reader->EvaluateMVA("BDTG method");	
+						//std::cerr << MVA_BDTG << std::endl;
+						if ((MVA_BDTG+1)/2.0 >= 0.95) {
+							//std::cerr << "got one!" << mc_weight << std::endl;
+							tot_bdtg += mc_weight;
+						}
+					}
+				}
+
+				// Get elapsed time
+				sw.Stop();
+				std::cerr << "--- End of event loop: "; sw.Print();
+
+
+
+				delete reader;
+
+				std::cerr << "==> TMVAClassificationApplication is done!" << std::endl << std::endl;
+
 			}
 
-			cout << tot << endl;
-			// Get elapsed time
-			sw.Stop();
-			std::cout << "--- End of event loop: "; sw.Print();
 
-			std::cout << "--- Created root file containing the MVA output histograms" << std::endl;
-
-			histMLP->Write();
-			target->Write();
-			target->Close();
-
-			delete reader;
-
-			std::cout << "==> TMVAClassificationApplication is done!" << std::endl << std::endl;
-
-
-
-		}
-
-		std::set<method_stats>::iterator it;
-		std::cout << "Best variables:" << std::endl;
-		for (it = rankings.begin(); it != rankings.end(); it++) {
-			std::cout << "================================================" << std::endl;
-			std::cout << "Significance: " << it->first << std::endl;
-			std::cout << "Method Name: " << (it->second).second << std::endl;
-			std::cout << "variables used: ";
-			for (int i = 0; i < variables.size(); i++) {
-				if ((it->second).first & (1LL << i)) std::cout << "[ " << variables[i][1] << " ] ";
+			//get efficiency of methods, compare with current bests
+			if (Use["MLP"]) {
+				double sig = 10.2/sqrt(10.2 + tot_mlp); 
+				std::cerr << "MLP Significance: " << sig <<  std::endl;
+				rankings.insert(make_method_stats(variable_choice, sig, "MLP"));
 			}
-			cout << endl;
-			std::cout << "================================================" << std::endl;
+
+			if (Use["BDTG"]) {
+				double sig = 10.2/sqrt(10.2 + tot_bdtg);
+				//std::cerr << tot_bdtg << std::endl;
+				std::cerr << "BDTG Significance: " << sig <<  std::endl;
+				rankings.insert(make_method_stats(variable_choice, sig, "BDTG"));
+			}
 		}
 
-		// Launch the GUI for the root macros
-		//if (!gROOT->IsBatch()) TMVAGui( outfileName );
-		gApplication->Terminate(0);
+	}
+	std::set<method_stats>::iterator it;
+	std::cout << "Best variables:" << std::endl;
+	for (it = rankings.begin(); it != rankings.end(); it++) {
+		std::cout << "================================================" << std::endl;
+		std::cout << "Significance: " << it->first << std::endl;
+		std::cout << "Method Name: " << (it->second).second << std::endl;
+		std::cout << "variables used: ";
+		for (int i = 0; i < variables.size(); i++) {
+			if ((it->second).first & (1LL << i)) std::cout << "[ " << variables[i][1] << " ] ";
+		}
+		cout << endl;
+		std::cout << "================================================" << std::endl;
 	}
 
+	// Launch the GUI for the root macros
+	//if (!gROOT->IsBatch()) TMVAGui( outfileName );
+	gApplication->Terminate(0);
+
+}
