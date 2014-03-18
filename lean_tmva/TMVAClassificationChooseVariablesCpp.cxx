@@ -144,7 +144,7 @@ int main(int argc, char* argv[]) {
 	}
 
 	std::set<method_stats> rankings;
-	for (int num_used = 10; num_used <= std::min((int) variables.size(),10); num_used++) {
+	for (int num_used = 2; num_used <= std::min((int) variables.size(),10); num_used++) {
 
 		// Create a ROOT output file where TMVA will store ntuples, histograms, etc.
 		TString outfileName( "TMVA.root" );
@@ -260,34 +260,33 @@ int main(int argc, char* argv[]) {
 		Float_t weight_70, btweight_70, weight_1btin_70;
 		Int_t analysis_channel;
 
+		Reader *reader = new TMVA::Reader( "!Color:!Silent" );	
+		std::vector<Float_t> var_val(num_used);
+
+		int cnt = 0;
+		for (int i = 0; i < num_used; i++) {
+			if (variables[i][1] == "analysis_channel") continue;
+			const std::vector<TString>& tup = variables[i];
+			//std::cerr << "Adding variable: " << tup[1] << std::endl;
+			reader->AddVariable( tup[0], &var_val[cnt++] );
+		}
+
+		// --- Book the MVA methods
+		if (Use["MLP"]) {
+			TString methodName = TString("MLP method");
+			reader->BookMVA( methodName, "weights/TMVAClassification_MLP.weights.xml" );
+		}
+
+		if (Use["BDTG"]) {
+			TString methodName = TString("BDTG method");
+			reader->BookMVA( methodName, "weights/TMVAClassification_BDTG.weights.xml" );
+		}
+	
 		TTree* background[10] = {ttbar_el, ttbar_mu, wjets_el, wjets_mu, zjets_el, zjets_mu, 
 			singletop_el, singletop_mu, diboson_el, diboson_mu};
 
 		double tot_bg_mlp = 0, tot_bg_bdtg = 0;
 		for (int bg = 0; bg < 10; bg++) {
-			Reader *reader = new TMVA::Reader( "!Color:!Silent" );	
-
-			std::vector<Float_t> var_val(num_used);
-
-			int cnt = 0;
-			for (int i = 0; i < num_used; i++) {
-				if (variables[i][1] == "analysis_channel") continue;
-				const std::vector<TString>& tup = variables[i];
-				//std::cerr << "Adding variable: " << tup[1] << std::endl;
-				reader->AddVariable( tup[0], &var_val[cnt++] );
-			}
-
-			// --- Book the MVA methods
-			if (Use["MLP"]) {
-				TString methodName = TString("MLP method");
-				reader->BookMVA( methodName, "weights/TMVAClassification_MLP.weights.xml" );
-			}
-
-			if (Use["BDTG"]) {
-				TString methodName = TString("BDTG method");
-				reader->BookMVA( methodName, "weights/TMVAClassification_BDTG.weights.xml" );
-			}
-
 			// Prepare input tree (this must be replaced by your data source)
 			// in this example, there is a toy tree with signal and one with background events
 			// we'll later on use only the "signal" events for the test in this example.
@@ -302,7 +301,7 @@ int main(int argc, char* argv[]) {
 				if (variables[i][1] == "analysis_channel") continue;
 				const std::vector<TString>& tup = variables[i];
 				//std::cerr << "Adding variable: " << tup[1] << std::endl;
-				theTree->SetBranchAddress( tup[0], &var_val[cnt++] );
+				theTree->SetBranchAddress( tup[1], &var_val[cnt++] );
 			}
 
 			theTree->SetBranchAddress( "weight_70", &weight_70);
@@ -312,8 +311,6 @@ int main(int argc, char* argv[]) {
 			//std::cerr << "--- Processing: " << theTree->GetEntries() << " events" << std::endl;
 			//TStopwatch sw;
 			//sw.Start();
-
-
 
 			Int_t nEvent = theTree->GetEntries();
 
@@ -347,45 +344,17 @@ int main(int argc, char* argv[]) {
 				}
 			}
 
+			theTree->ResetBranchAddresses();
 			// Get elapsed time
 			//sw.Stop();
 			std::cerr << "--- End of event loop: "; //sw.Print();
-
-
-
-			delete reader;
-
 			std::cerr << "==> TMVAClassificationApplication is done!" << std::endl << std::endl;
-
 		}
 
 		TTree* signal[2] = {signal_test_el, signal_test_mu};
 
 		double signal_mlp = 0, signal_bdtg = 0;
 		for (int s = 0; s < 2; s++) {
-			Reader *reader = new TMVA::Reader( "!Color:!Silent" );	
-
-			std::vector<Float_t> var_val(num_used);
-
-			int cnt = 0;
-			for (int i = 0; i < num_used; i++) {
-				if (variables[i][1] == "analysis_channel") continue;
-				const std::vector<TString>& tup = variables[i];
-				//std::cerr << "Adding variable: " << tup[1] << std::endl;
-				reader->AddVariable( tup[0], &var_val[cnt++] );
-			}
-
-			// --- Book the MVA methods
-			if (Use["MLP"]) {
-				TString methodName = TString("MLP method");
-				reader->BookMVA( methodName, "weights/TMVAClassification_MLP.weights.xml" );
-			}
-
-			if (Use["BDTG"]) {
-				TString methodName = TString("BDTG method");
-				reader->BookMVA( methodName, "weights/TMVAClassification_BDTG.weights.xml" );
-			}
-
 			// Prepare input tree (this must be replaced by your data source)
 			// in this example, there is a toy tree with signal and one with background events
 			// we'll later on use only the "signal" events for the test in this example.
@@ -447,13 +416,8 @@ int main(int argc, char* argv[]) {
 
 			// Get elapsed time
 			//sw.Stop();
+			theTree->ResetBranchAddresses();
 			std::cerr << "--- End of event loop: "; //sw.Print();
-
-
-
-			delete reader;
-
-			//sleep(1);
 			std::cerr << "==> TMVAClassificationApplication is done!" << std::endl << std::endl;
 
 
