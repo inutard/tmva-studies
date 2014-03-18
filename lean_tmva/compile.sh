@@ -1,0 +1,1 @@
+g++ -pthread -m64 -I/atlas/ATLASLocalRootBase/x86_64/root/5.32.01-x86_64-slc5-gcc4.3/include -m64 -L/atlas/ATLASLocalRootBase/x86_64/root/5.32.01-x86_64-slc5-gcc4.3/lib -lGui -lCore -lCint -lRIO -lNet -lHist -lGraf -lGraf3d -lGpad -lTree -lRint -lPostscript -lMatrix -lPhysics -lMathCore -lThread -pthread -lm -ldl -rdynamic -lTMVA -Wall -Wextra $1.cxx -O3 -o $1

@@ -147,8 +147,8 @@ void TMVAClassification(int MVA_type) {
 	}
 
 	std::set<method_stats> rankings;
-	const int max_trials = 5;
-	for (int num_used = 2; num_used <= min(variables.size(),13); num_used++) {
+	const int max_trials = 4;
+	for (int num_used = 5; num_used <= min(variables.size(),8); num_used++) {
 		for (int trial = 0; trial < max_trials; trial++) {
 
 			// Create a ROOT output file where TMVA will store ntuples, histograms, etc.
@@ -259,6 +259,9 @@ void TMVAClassification(int MVA_type) {
 			std::cerr << "==> TMVAClassification is done!" << std::endl;
 
 			delete factory;
+
+			//std::cerr << "Pausing before application stage..." << std::endl;
+			//sleep(10);
 
 			//=================================== Begin Application =====================================//
 
