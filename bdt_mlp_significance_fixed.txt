@@ -1,0 +1,2 @@
+--- <FATAL> BDTG                     : You declared 3 variables in the Reader while there are 8 variables declared in the file
+***> abort program execution

@@ -96,7 +96,7 @@ int main(int argc, char* argv[]) {
 	Use["MLP"]             = bool(1&MVA_type); // Recommended ANN
 	// 
 	// --- Boosted Decision Trees
-	Use["BDTG"]            = bool(2&MVA_type);
+	Use["BDT"]            = bool(2&MVA_type);
 	// ---------------------------------------------------------------
 
 	std::cerr << std::endl;
@@ -152,7 +152,7 @@ int main(int argc, char* argv[]) {
 
 	std::set<method_stats> rankings;
 	const int max_trials = 5;
-	for (int num_used = 2; num_used <= std::min((int) variables.size(),8); num_used++) {
+	for (int num_used = 4; num_used <= std::min((int) variables.size(),13); num_used++) {
 		for (int trial = 0; trial < max_trials; trial++) {
 
 			// Create a ROOT output file where TMVA will store ntuples, histograms, etc.
@@ -170,14 +170,14 @@ int main(int argc, char* argv[]) {
 			// All TMVA output can be suppressed by removing the "!" (not) in
 			// front of the "Silent" argument in the option string
 			Factory *factory = new Factory( "TMVAClassification", outputFile,
-					"!V:Silent:Color:DrawProgressBar:AnalysisType=Classification" );
+					"!V:Silent:Color:DrawProgressBar:Transformations=I;D;P;G,D:AnalysisType=Classification" );
 
 			std::cerr << std::endl;
 			std::cerr << "================================================" << std::endl;
 			//add a random num_used sized subset of variables to train on.
 			long long variable_choice = random_ksubset(variables.size(), num_used);
 
-			for (int i = 0; i < variables.size(); i++) {
+			for (int i = 0; i < (int) variables.size(); i++) {
 				if (variables[i][1] == "analysis_channel") continue;
 				long long chosen = variable_choice;
 				chosen &= (1LL << i);
@@ -212,8 +212,8 @@ int main(int argc, char* argv[]) {
 			factory->SetBackgroundWeightExpression("weight_1btin_70*weight_70/btweight_70");
 
 			// Apply additional cuts on the signal and background samples (can be different)
-			TCut mycuts = "weight_70>0 && analysis_channel==1"; // for example: TCut mycuts = "abs(var1)<0.5 && abs(var2-0.5)<1";
-			TCut mycutb = "weight_70>0 && analysis_channel==1"; // for example: TCut mycutb = "abs(var1)<0.5";
+			TCut mycuts = "weight_70>0 && analysis_channel>0"; // for example: TCut mycuts = "abs(var1)<0.5 && abs(var2-0.5)<1";
+			TCut mycutb = "weight_70>0 && analysis_channel>0"; // for example: TCut mycutb = "abs(var1)<0.5";
 
 			// Tell the factory how to use the training and testing events
 			//
@@ -234,14 +234,14 @@ int main(int argc, char* argv[]) {
 
 			// TMVA ANN: MLP (recommended ANN) -- all ANNs in TMVA are Multilayer Perceptrons
 			if (Use["MLP"])
-				factory->BookMethod( Types::kMLP, "MLP", "!H:!V:NeuronType=tanh:VarTransform=N:NCycles=600:HiddenLayers=N+5:TestRate=5:!UseRegulator" );
+				factory->BookMethod( Types::kMLP, "MLP", "!H:!V:NeuronType=tanh:VarTransform=N:NCycles=700:HiddenLayers=N+5:TestRate=5:!UseRegulator:SamplingTraining=False:EstimatorType=CE" );
 
 			// Boosted decision trees
 			// In later versions of TMVA, use UsedBaggedBoost and BaggedSampleFraction
 			// Instead of UsedBaggedGrad and GradBaggingFraction
-			if (Use["BDTG"])
-				factory->BookMethod( Types::kBDT, "BDTG",
-						"!H:!V:NTrees=2000::BoostType=Grad:Shrinkage=0.1:UseBaggedGrad:GradBaggingFraction=0.5:nCuts=20:MaxDepth=3:MaxDepth=4" );
+			if (Use["BDT"])
+				factory->BookMethod( Types::kBDT, "BDT",
+						"!H:!V:NTrees=400:nEventsMin=400:MaxDepth=3:BoostType=AdaBoost:SeparationType=GiniIndex:nCuts=20:PruneMethod=NoPruning");
 
 			// ---- Now you can tell the factory to train, test, and evaluate the MVAs
 
@@ -269,13 +269,16 @@ int main(int argc, char* argv[]) {
 
 			//=================================== Begin Application =====================================//
 
+			Float_t weight_70, btweight_70, weight_1btin_70;
+			Int_t analysis_channel;
+
 			// Create the Reader Object
 			Reader *reader = new TMVA::Reader( "!Color:!Silent" );	
 
 			std::vector<Float_t> var_val(num_used);
 
 			int cnt = 0;
-			for (int i = 0; i < variables.size(); i++) {
+			for (int i = 0; i < (int) variables.size(); i++) {
 				if (variables[i][1] == "analysis_channel") continue;
 				long long chosen = variable_choice;
 				chosen &= (1LL << i);
@@ -292,30 +295,40 @@ int main(int argc, char* argv[]) {
 				reader->BookMVA( methodName, "weights/TMVAClassification_MLP.weights.xml" );
 			}
 
-			if (Use["BDTG"]) {
-				TString methodName = TString("BDTG method");
-				reader->BookMVA( methodName, "weights/TMVAClassification_BDTG.weights.xml" );
+			if (Use["BDT"]) {
+				TString methodName = TString("BDT method");
+				reader->BookMVA( methodName, "weights/TMVAClassification_BDT.weights.xml" );
 			}
 
-			Float_t weight_70, btweight_70, weight_1btin_70;
-			Int_t analysis_channel;
+
 
 			TTree* background[10] = {ttbar_el, ttbar_mu, wjets_el, wjets_mu, zjets_el, zjets_mu, 
 				singletop_el, singletop_mu, diboson_el, diboson_mu};
 
-			double tot_bg_mlp = 0, tot_bg_bdtg = 0;
+
+			const int cuts = 20;
+			double l_mlp = 0.7, r_mlp = 1.0;
+			double del_mlp = (r_mlp-l_mlp)/cuts;
+
+			double l_bdt = 0.5, r_bdt = 0.7;
+			double del_bdt = (r_bdt-l_bdt)/cuts;
+
+			double max_mlp_sig = 0, max_bdt_sig = 0;
+			double best_mlp_cut = 0, best_bdt_cut = 0;
+
+			std::vector<double> tot_bg_mlp(cuts, 0), tot_bg_bdt(cuts, 0);
 			for (int bg = 0; bg < 10; bg++) {
 				// Prepare input tree (this must be replaced by your data source)
 				// in this example, there is a toy tree with signal and one with background events
 				// we'll later on use only the "signal" events for the test in this example.
 				//
 
-				std::cerr << "--- Testing background sample ---" << std::endl;
+				//std::cerr << "--- Testing background sample ---" << std::endl;
 
 				TTree* theTree = background[bg];	
 
 				cnt = 0;
-				for (int i = 0; i < variables.size(); i++) {
+				for (int i = 0; i < (int) variables.size(); i++) {
 					if (variables[i][1] == "analysis_channel") continue;
 					long long chosen = variable_choice;
 					chosen &= (1LL << i);
@@ -330,7 +343,7 @@ int main(int argc, char* argv[]) {
 				theTree->SetBranchAddress( "btweight_70", &btweight_70);
 				theTree->SetBranchAddress( "weight_1btin_70", &weight_1btin_70);
 				theTree->SetBranchAddress( "analysis_channel", &analysis_channel);
-				std::cerr << "--- Processing: " << theTree->GetEntries() << " events" << std::endl;
+				//std::cerr << "--- Processing: " << theTree->GetEntries() << " events" << std::endl;
 				//TStopwatch sw;
 				//sw.Start();
 
@@ -339,9 +352,9 @@ int main(int argc, char* argv[]) {
 				Int_t nEvent = theTree->GetEntries();
 
 				for (Long64_t ievt=0; ievt<nEvent; ievt++) {
-					if (ievt%10000 == 0) {
-						std::cerr << "--- ... Processing event: " << ievt << std::endl;
-					}
+					//if (ievt%10000 == 0) {
+					//	std::cerr << "--- ... Processing event: " << ievt << std::endl;
+					//}
 
 					theTree->GetEntry(ievt);
 					if (analysis_channel == 0) continue;
@@ -352,18 +365,26 @@ int main(int argc, char* argv[]) {
 					// --- Return the MVA outputs and fill into histograms
 					if (Use["MLP"]) {
 						Double_t MVA_MLP = reader->EvaluateMVA( "MLP method" );
-						if (MVA_MLP >= 0.9965) {
-							//std::cerr << "got one! " << mc_weight << std::endl; 
-							tot_bg_mlp += mc_weight;
+
+						for (int c = 0; c < cuts; c++) {
+							double mva_cut = l_mlp + c*del_mlp;
+							if (MVA_MLP >= mva_cut) {
+								//std::cerr << "got one! " << mc_weight << std::endl; 
+								tot_bg_mlp[c] += mc_weight;
+							}
 						}
 					}
 
-					if (Use["BDTG"]) {
-						Double_t MVA_BDTG = reader->EvaluateMVA("BDTG method");	
-						//std::cerr << MVA_BDTG << std::endl;
-						if ((MVA_BDTG+1)/2.0 >= 0.95) {
-							//std::cerr << "got one!" << mc_weight << std::endl;
-							tot_bg_bdtg += mc_weight;
+					if (Use["BDT"]) {
+						Double_t MVA_BDT = reader->EvaluateMVA("BDT method");	
+						//std::cerr << MVA_BDT << std::endl;
+						for (int c = 0; c < cuts; c++) {
+							double mva_cut = l_bdt + c*del_bdt;
+
+							if ((MVA_BDT+1)/2.0 >= mva_cut) {
+								//std::cerr << "got one!" << mc_weight << std::endl;
+								tot_bg_bdt[c] += mc_weight;
+							}
 						}
 					}
 				}
@@ -371,26 +392,26 @@ int main(int argc, char* argv[]) {
 				theTree->ResetBranchAddresses();
 				// Get elapsed time
 				//sw.Stop();
-				std::cerr << "--- End of event loop: "; //sw.Print();
-				std::cerr << "==> TMVAClassificationApplication is done!" << std::endl << std::endl;
+				//std::cerr << "--- End of event loop: "; //sw.Print();
+				//std::cerr << "==> TMVAClassificationApplication is done!" << std::endl << std::endl;
 
 			}
 
 			TTree* signal[2] = {signal_test_el, signal_test_mu};
 
-			double signal_mlp = 0, signal_bdtg = 0;
+			std::vector<double> signal_mlp(cuts, 0), signal_bdt(cuts, 0);
 			for (int s = 0; s < 2; s++) {
 				// Prepare input tree (this must be replaced by your data source)
 				// in this example, there is a toy tree with signal and one with background events
 				// we'll later on use only the "signal" events for the test in this example.
 				//
 
-				std::cerr << "--- Testing signal sample ---" << std::endl;
+				//std::cerr << "--- Testing signal sample ---" << std::endl;
 
 				TTree* theTree = signal[s];	
 
 				cnt = 0;
-				for (int i = 0; i < variables.size(); i++) {
+				for (int i = 0; i < (int) variables.size(); i++) {
 					if (variables[i][1] == "analysis_channel") continue;
 					long long chosen = variable_choice;
 					chosen &= (1LL << i);
@@ -405,7 +426,7 @@ int main(int argc, char* argv[]) {
 				theTree->SetBranchAddress( "btweight_70", &btweight_70);
 				theTree->SetBranchAddress( "weight_1btin_70", &weight_1btin_70);
 				theTree->SetBranchAddress( "analysis_channel", &analysis_channel);
-				std::cerr << "--- Processing: " << theTree->GetEntries() << " events" << std::endl;
+				//std::cerr << "--- Processing: " << theTree->GetEntries() << " events" << std::endl;
 				//TStopwatch sw;
 				//sw.Start();
 
@@ -414,9 +435,9 @@ int main(int argc, char* argv[]) {
 				Int_t nEvent = theTree->GetEntries();
 
 				for (Long64_t ievt=0; ievt<nEvent; ievt++) {
-					if (ievt%10000 == 0) {
-						std::cerr << "--- ... Processing event: " << ievt << std::endl;
-					}
+					//if (ievt%10000 == 0) {
+					//	std::cerr << "--- ... Processing event: " << ievt << std::endl;
+					//}
 
 					theTree->GetEntry(ievt);
 					if (analysis_channel == 0) continue;
@@ -427,18 +448,27 @@ int main(int argc, char* argv[]) {
 					// --- Return the MVA outputs and fill into histograms
 					if (Use["MLP"]) {
 						Double_t MVA_MLP = reader->EvaluateMVA( "MLP method" );
-						if (MVA_MLP >= 0.9965) {
-							//std::cerr << "got one! " << mc_weight << std::endl; 
-							signal_mlp += mc_weight;
+						for (int c = 0; c < cuts; c++) {
+							double mva_cut = l_mlp + c*del_mlp;
+
+							if (MVA_MLP >= mva_cut) {
+								//std::cerr << "got one! " << mc_weight << std::endl; 
+								signal_mlp[c] += mc_weight;
+							}
 						}
 					}
 
-					if (Use["BDTG"]) {
-						Double_t MVA_BDTG = reader->EvaluateMVA("BDTG method");	
-						//std::cerr << MVA_BDTG << std::endl;
-						if ((MVA_BDTG+1)/2.0 >= 0.95) {
-							//std::cerr << "got one!" << mc_weight << std::endl;
-							signal_bdtg += mc_weight;
+					if (Use["BDT"]) {
+						Double_t MVA_BDT = reader->EvaluateMVA("BDT method");	
+						for (int c = 0; c < cuts; c++) {
+							double mva_cut = l_bdt + c*del_bdt;
+
+							//std::cerr << MVA_BDT << std::endl;
+
+							if ((MVA_BDT+1)/2.0 >= mva_cut) {
+								//std::cerr << "got one!" << mc_weight << std::endl;
+								signal_bdt[c] += mc_weight;
+							}
 						}
 					}
 				}
@@ -446,36 +476,48 @@ int main(int argc, char* argv[]) {
 				theTree->ResetBranchAddresses();
 				// Get elapsed time
 				//sw.Stop();
-				std::cerr << "--- End of event loop: "; //sw.Print();
+				//std::cerr << "--- End of event loop: "; //sw.Print();
 
 
 
 				//sleep(1);
-				std::cerr << "==> TMVAClassificationApplication is done!" << std::endl << std::endl;
+				//std::cerr << "==> TMVAClassificationApplication is done!" << std::endl << std::endl;
 
 
 				//if (ievt % 10000 == 0)
-				//	std::cerr << signal_mlp << " " << std::signal_bdtg < endl;
+				//	std::cerr << signal_mlp << " " << std::signal_bdt < endl;
+				if (Use["MLP"]) {
+					for (int c = 0; c < cuts; c++) {
+						double sig = signal_mlp[c]/sqrt(signal_mlp[c]+tot_bg_mlp[c]);
+						if (max_mlp_sig < sig) {
+							best_mlp_cut = l_mlp + c*del_mlp;
+							max_mlp_sig = sig;
+						}
+					}
+				}
+
+				if (Use["BDT"]) {
+					for (int c = 0; c < cuts; c++) {
+						double sig = signal_bdt[c]/sqrt(signal_bdt[c]+tot_bg_bdt[c]);
+						if (max_bdt_sig < sig) {
+							best_bdt_cut = l_bdt + c*del_bdt;
+							max_bdt_sig = sig;
+						}
+					}
+				}
 			}
+
 
 			delete reader;
-			std::cerr << signal_mlp << " " << tot_bg_mlp << " " << signal_bdtg << " " << tot_bg_bdtg << std::endl;
 			//get efficiency of methods, compare with current bests
 			if (Use["MLP"]) {
-				double sig = signal_mlp/sqrt(signal_mlp + tot_bg_mlp);
-				if (signal_mlp != 0) {
-					std::cerr << "MLP Significance: " << sig <<  std::endl;
-					rankings.insert(make_method_stats(variable_choice, sig, "MLP"));
-				}
+				std::cerr << "MLP Significance: " << max_mlp_sig << " at cut " << best_mlp_cut << std::endl;
+				rankings.insert(make_method_stats(variable_choice, max_mlp_sig, "MLP"));
 			}
 
-			if (Use["BDTG"]) {
-				double sig = signal_bdtg/sqrt(signal_bdtg + tot_bg_bdtg);
-				//std::cerr << tot_bg_bdtg << std::endl;
-				if (signal_bdtg != 0) {
-					std::cerr << "BDTG Significance: " << sig <<  std::endl;
-					rankings.insert(make_method_stats(variable_choice, sig, "BDTG"));
-				}
+			if (Use["BDT"]) {
+				std::cerr << "BDT Significance: " << max_bdt_sig << " at cut " << best_bdt_cut << std::endl;
+				rankings.insert(make_method_stats(variable_choice, max_bdt_sig, "BDT"));
 			}
 		}
 
@@ -487,7 +529,7 @@ int main(int argc, char* argv[]) {
 		std::cout << "Significance: " << it->first << std::endl;
 		std::cout << "Method Name: " << (it->second).second << std::endl;
 		std::cout << "variables used: ";
-		for (int i = 0; i < variables.size(); i++) {
+		for (int i = 0; i < (int) variables.size(); i++) {
 			if ((it->second).first & (1LL << i)) std::cout << "[ " << variables[i][1] << " ] ";
 		}
 		cout << endl;

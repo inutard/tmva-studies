@@ -90,7 +90,7 @@ int main(int argc, char* argv[]) {
 	Use["MLP"]             = bool(1&MVA_type); // Recommended ANN
 	// 
 	// --- Boosted Decision Trees
-	Use["BDTG"]            = bool(2&MVA_type);
+	Use["BDT"]            = bool(2&MVA_type);
 	// ---------------------------------------------------------------
 
 	std::cerr << std::endl;
@@ -144,10 +144,10 @@ int main(int argc, char* argv[]) {
 	}
 
 	std::set<method_stats> rankings;
-	for (int num_used = 2; num_used <= std::min((int) variables.size(),10); num_used++) {
+	for (int num_used = variables.size(); num_used <= std::min((int) variables.size(),15); num_used++) {
 
 		// Create a ROOT output file where TMVA will store ntuples, histograms, etc.
-		TString outfileName( "TMVA.root" );
+		TString outfileName( "TMVAChooseVars.root" );
 		TFile* outputFile = TFile::Open( outfileName, "RECREATE" );
 
 		// Create the factory object. Later you can choose the methods
@@ -161,7 +161,7 @@ int main(int argc, char* argv[]) {
 		// All TMVA output can be suppressed by removing the "!" (not) in
 		// front of the "Silent" argument in the option string
 		Factory *factory = new Factory( "TMVAClassification", outputFile,
-				"!V:Silent:Color:DrawProgressBar:AnalysisType=Classification" );
+				"!V:Silent:Color:DrawProgressBar:Transformations=I;D;P;G,D:AnalysisType=Classification" );
 
 		std::cerr << std::endl;
 		std::cerr << "================================================" << std::endl;
@@ -198,8 +198,8 @@ int main(int argc, char* argv[]) {
 		factory->SetBackgroundWeightExpression("weight_1btin_70*weight_70/btweight_70");
 
 		// Apply additional cuts on the signal and background samples (can be different)
-		TCut mycuts = "weight_70>0 && analysis_channel==1"; // for example: TCut mycuts = "abs(var1)<0.5 && abs(var2-0.5)<1";
-		TCut mycutb = "weight_70>0 && analysis_channel==1"; // for example: TCut mycutb = "abs(var1)<0.5";
+		TCut mycuts = "weight_70>0 && analysis_channel>0"; // for example: TCut mycuts = "abs(var1)<0.5 && abs(var2-0.5)<1";
+		TCut mycutb = "weight_70>0 && analysis_channel>0"; // for example: TCut mycutb = "abs(var1)<0.5";
 
 		// Tell the factory how to use the training and testing events
 		//
@@ -220,14 +220,14 @@ int main(int argc, char* argv[]) {
 
 		// TMVA ANN: MLP (recommended ANN) -- all ANNs in TMVA are Multilayer Perceptrons
 		if (Use["MLP"])
-			factory->BookMethod( Types::kMLP, "MLP", "!H:!V:NeuronType=tanh:VarTransform=N:NCycles=600:HiddenLayers=N+5:TestRate=5:!UseRegulator" );
+			factory->BookMethod( Types::kMLP, "MLP", "!H:!V:NeuronType=tanh:VarTransform=N:NCycles=600:HiddenLayers=N+20:TestRate=5:!UseRegulator" );
 
 		// Boosted decision trees
 		// In later versions of TMVA, use UsedBaggedBoost and BaggedSampleFraction
 		// Instead of UsedBaggedGrad and GradBaggingFraction
-		if (Use["BDTG"])
-			factory->BookMethod( Types::kBDT, "BDTG",
-					"!H:!V:NTrees=2000::BoostType=Grad:Shrinkage=0.1:UseBaggedGrad:GradBaggingFraction=0.5:nCuts=20:MaxDepth=3:MaxDepth=4" );
+		if (Use["BDT"])
+			factory->BookMethod( Types::kBDT, "BDT",
+					"!H:!V:NTrees=400:nEventsMin=400:MaxDepth=3:BoostType=AdaBoost:SeparationType=GiniIndex:nCuts=20:PruneMethod=NoPruning" );
 
 		// ---- Now you can tell the factory to train, test, and evaluate the MVAs
 
@@ -277,15 +277,16 @@ int main(int argc, char* argv[]) {
 			reader->BookMVA( methodName, "weights/TMVAClassification_MLP.weights.xml" );
 		}
 
-		if (Use["BDTG"]) {
-			TString methodName = TString("BDTG method");
-			reader->BookMVA( methodName, "weights/TMVAClassification_BDTG.weights.xml" );
+		if (Use["BDT"]) {
+			TString methodName = TString("BDT method");
+			reader->BookMVA( methodName, "weights/TMVAClassification_BDT.weights.xml" );
 		}
-	
+
+		double mlp_cut = 0.9965, bdt_cut = 0.57;
 		TTree* background[10] = {ttbar_el, ttbar_mu, wjets_el, wjets_mu, zjets_el, zjets_mu, 
 			singletop_el, singletop_mu, diboson_el, diboson_mu};
 
-		double tot_bg_mlp = 0, tot_bg_bdtg = 0;
+		double tot_bg_mlp = 0, tot_bg_bdt = 0;
 		for (int bg = 0; bg < 10; bg++) {
 			// Prepare input tree (this must be replaced by your data source)
 			// in this example, there is a toy tree with signal and one with background events
@@ -328,18 +329,18 @@ int main(int argc, char* argv[]) {
 				// --- Return the MVA outputs and fill into histograms
 				if (Use["MLP"]) {
 					Double_t MVA_MLP = reader->EvaluateMVA( "MLP method" );
-					if (MVA_MLP >= 0.9965) {
+					if (MVA_MLP >= mlp_cut) {
 						//std::cerr << "got one! " << mc_weight << std::endl; 
 						tot_bg_mlp += mc_weight;
 					}
 				}
 
-				if (Use["BDTG"]) {
-					Double_t MVA_BDTG = reader->EvaluateMVA("BDTG method");	
-					//std::cerr << MVA_BDTG << std::endl;
-					if ((MVA_BDTG+1)/2.0 >= 0.95) {
+				if (Use["BDT"]) {
+					Double_t MVA_BDT = reader->EvaluateMVA("BDT method");	
+					//std::cerr << MVA_BDT << std::endl;
+					if ((MVA_BDT+1)/2.0 >= bdt_cut) {
 						//std::cerr << "got one!" << mc_weight << std::endl;
-						tot_bg_bdtg += mc_weight;
+						tot_bg_bdt += mc_weight;
 					}
 				}
 			}
@@ -353,7 +354,7 @@ int main(int argc, char* argv[]) {
 
 		TTree* signal[2] = {signal_test_el, signal_test_mu};
 
-		double signal_mlp = 0, signal_bdtg = 0;
+		double signal_mlp = 0, signal_bdt = 0;
 		for (int s = 0; s < 2; s++) {
 			// Prepare input tree (this must be replaced by your data source)
 			// in this example, there is a toy tree with signal and one with background events
@@ -398,18 +399,18 @@ int main(int argc, char* argv[]) {
 				// --- Return the MVA outputs and fill into histograms
 				if (Use["MLP"]) {
 					Double_t MVA_MLP = reader->EvaluateMVA( "MLP method" );
-					if (MVA_MLP >= 0.9965) {
+					if (MVA_MLP >= mlp_cut) {
 						//std::cerr << "got one! " << mc_weight << std::endl; 
 						signal_mlp += mc_weight;
 					}
 				}
 
-				if (Use["BDTG"]) {
-					Double_t MVA_BDTG = reader->EvaluateMVA("BDTG method");	
-					//std::cerr << MVA_BDTG << std::endl;
-					if ((MVA_BDTG+1)/2.0 >= 0.95) {
+				if (Use["BDT"]) {
+					Double_t MVA_BDT = reader->EvaluateMVA("BDT method");	
+					//std::cerr << MVA_BDT << std::endl;
+					if ((MVA_BDT+1)/2.0 >= bdt_cut) {
 						//std::cerr << "got one!" << mc_weight << std::endl;
-						signal_bdtg += mc_weight;
+						signal_bdt += mc_weight;
 					}
 				}
 			}
@@ -422,10 +423,10 @@ int main(int argc, char* argv[]) {
 
 
 			//if (ievt % 10000 == 0)
-			//	std::cerr << signal_mlp << " " << std::signal_bdtg < endl;
+			//	std::cerr << signal_mlp << " " << std::signal_bdt < endl;
 		}
 
-		std::cerr << signal_mlp << " " << tot_bg_mlp << " " << signal_bdtg << " " << tot_bg_bdtg << std::endl;
+		std::cerr << signal_mlp << " " << tot_bg_mlp << " " << signal_bdt << " " << tot_bg_bdt << std::endl;
 		//get efficiency of methods, compare with current bests
 		if (Use["MLP"]) {
 			double sig = signal_mlp/sqrt(signal_mlp + tot_bg_mlp);
@@ -435,12 +436,12 @@ int main(int argc, char* argv[]) {
 			}
 		}
 
-		if (Use["BDTG"]) {
-			double sig = signal_bdtg/sqrt(signal_bdtg + tot_bg_bdtg);
-			//std::cerr << tot_bg_bdtg << std::endl;
-			if (signal_bdtg != 0) {
-				std::cerr << "BDTG Significance: " << sig <<  std::endl;
-				rankings.insert(make_method_stats((1<<num_used)-1, sig, "BDTG"));
+		if (Use["BDT"]) {
+			double sig = signal_bdt/sqrt(signal_bdt + tot_bg_bdt);
+			//std::cerr << tot_bg_bdt << std::endl;
+			if (signal_bdt != 0) {
+				std::cerr << "BDT Significance: " << sig <<  std::endl;
+				rankings.insert(make_method_stats((1<<num_used)-1, sig, "BDT"));
 			}
 		}
 	}
